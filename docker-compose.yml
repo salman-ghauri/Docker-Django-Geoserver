@@ -1,0 +1,41 @@
+version: '2'
+services: 
+  db:
+    build: ./db
+    ports:
+      - "5445:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=maps
+      - POSTGRES_PASSWORD=admin123
+    volumes:
+      - /var/lib/postgresql/data
+    volumes_from:
+      - container:db_bus
+
+  geoserver:
+    build: ./geoserver
+    depends_on:
+      - db
+    ports:
+      - "8005:8080"
+    volumes:
+      - /opt/geoserver/data_dir
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "83:80"
+    depends_on:
+      - web
+
+  web:
+    restart: always
+    build: ./web
+    volumes:
+      - ./web:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: python manage.py runserver 0.0.0.0:8000
