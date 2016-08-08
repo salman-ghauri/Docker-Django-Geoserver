@@ -1,41 +1,57 @@
 version: '2'
-services: 
-  db:
-    build: ./db
+services:
+  web:
+    environment:
+      - DEBUG
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=maps
+      - POSTGRES_PASSWORD=admin123
+      - PG_ADDRESS=172.21.0.2  
+      - PG_PORT=5432
+    # command: ./wait-for-it.sh $PG_ADDRESS
+    build: ./web
+    volumes:
+      - ./web:/code
+      # - web_data:/code
     ports:
-      - "5445:5432"
+      - "8008:8000"
+    depends_on:
+      - db
+    command: python manage.py runserver 0.0.0.0:8008
+  db:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_DB=maps
       - POSTGRES_PASSWORD=admin123
+      - PG_ADDRESS=172.21.0.2  
+      - PG_PORT=5432
+    build: ./db
+    ports:
+      - "5445:5432"    
     volumes:
-      - /var/lib/postgresql/data
-    volumes_from:
-      - container:db_bus
+      - db_data:/var/lib/postgresql/data
+    logging:
+      driver: "json-file"
+    # command: ./wait.sh
 
   geoserver:
     build: ./geoserver
-    depends_on:
-      - db
     ports:
-      - "8005:8080"
+      - "8080:8080"
     volumes:
-      - /opt/geoserver/data_dir
+      - geoserver_data:/opt/geoserver/data_dir
 
   nginx:
     build: ./nginx
     ports:
-      - "83:80"
+      - "81:80"
     depends_on:
       - web
 
-  web:
-    restart: always
-    build: ./web
-    volumes:
-      - ./web:/code
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    command: python manage.py runserver 0.0.0.0:8000
+volumes:
+  db_data:
+    driver: local
+  web_data:
+    driver: local
+  geoserver_data:
+    driver: local

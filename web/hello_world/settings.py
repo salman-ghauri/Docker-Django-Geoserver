@@ -52,7 +52,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'hello_world.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -70,22 +69,19 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'hello_world.wsgi.application'
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': '172.21.0.2',
-        'PORT': '5432',
+        'NAME': os.environ['POSTGRES_DB'],
+        'USER': os.environ['POSTGRES_USER'],
+        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
+        'HOST': os.environ['PG_ADDRESS'],
+        'PORT': os.environ['PG_PORT'],
     }
 }
-
-
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -99,7 +95,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
