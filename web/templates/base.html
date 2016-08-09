@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        {% block title %}
+            Ireland Maps
+        {% endblock title %}
+    </title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'maps/css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'maps/css/ol.css' %}" />
+
+</head>
+<body>
+    <div id='page'>
+        <div id='header'>
+            <h3>Ireland Flood Data</h3>
+        </div>
+        <div id="content">
+            {% block content %}
+                This content has to come!
+            {% endblock content %}
+        </div>
+        <div id="footer">
+
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'maps/js/ol.js' %}"></script>
+    <script type="text/javascript" src="{% static 'maps/js/map.js' %}"></script>
+</body>
+</html>

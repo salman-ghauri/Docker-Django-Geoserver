@@ -6,38 +6,38 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_DB=maps
       - POSTGRES_PASSWORD=admin123
-      - PG_ADDRESS=172.21.0.2  
+      - PG_ADDRESS=172.21.0.2
       - PG_PORT=5432
-    # command: ./wait-for-it.sh $PG_ADDRESS
     build: ./web
     volumes:
-      - ./web:/code
+      - .:/code
       # - web_data:/code
     ports:
-      - "8008:8000"
+      - "8000:8000"
+    restart: always
     depends_on:
       - db
-    command: python manage.py runserver 0.0.0.0:8008
+    command: python web/manage.py runserver 0.0.0.0:8000
+
   db:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_DB=maps
       - POSTGRES_PASSWORD=admin123
-      - PG_ADDRESS=172.21.0.2  
+      - PG_ADDRESS=172.21.0.2
       - PG_PORT=5432
     build: ./db
     ports:
-      - "5445:5432"    
+      - "5445:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     logging:
       driver: "json-file"
-    # command: ./wait.sh
 
   geoserver:
     build: ./geoserver
     ports:
-      - "8080:8080"
+      - "8008:8080"
     volumes:
       - geoserver_data:/opt/geoserver/data_dir
 
