@@ -1,6 +1,7 @@
 $(document).ready(function (e) {
 
-    var geoserver_link = '172.21.0.3';
+    var geoserver_link = (window.location.host == '0.0.0.0')? '172.21.0.3' : '172.18.0.3';
+    // var geoserver_link = '172.21.0.3';
     var projection = new ol.proj.Projection({
           code: 'EPSG:29903',
           units: 'm',

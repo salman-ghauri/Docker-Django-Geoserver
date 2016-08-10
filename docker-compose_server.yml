@@ -1,0 +1,51 @@
+version: '2'
+services:
+  web:
+    environment:
+      - DEBUG
+    env_file: ./production.env
+    build: ./web
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - db
+    command: sh -c "cd web && /usr/local/bin/gunicorn hello_world.wsgi:application -w 2 -b :8000"
+
+  db:
+    env_file: ./production.env
+    build: ./db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    logging:
+      driver: "json-file"
+
+  geoserver:
+    build: ./geoserver
+    ports:
+      - "8080:8080"
+    volumes:
+      - geoserver_data:/opt/geoserver/data_dir
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - /www/static
+    volumes_from:
+      - web
+    links:
+      - web:web
+
+volumes:
+  db_data:
+    driver: local
+  web_data:
+    driver: local
+  geoserver_data:
+    driver: local
