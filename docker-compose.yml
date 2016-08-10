@@ -3,29 +3,19 @@ services:
   web:
     environment:
       - DEBUG
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=maps
-      - POSTGRES_PASSWORD=admin123
-      - PG_ADDRESS=172.21.0.2
-      - PG_PORT=5432
+    env_file: .env
     build: ./web
     volumes:
       - .:/code
-      # - web_data:/code
     ports:
       - "8000:8000"
     restart: always
     depends_on:
       - db
-    command: python web/manage.py runserver 0.0.0.0:8000
+    command: sh -c "cd web && /usr/local/bin/gunicorn hello_world.wsgi:application -w 2 -b :8000"
 
   db:
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=maps
-      - POSTGRES_PASSWORD=admin123
-      - PG_ADDRESS=172.21.0.2
-      - PG_PORT=5432
+    env_file: .env
     build: ./db
     ports:
       - "5445:5432"
@@ -37,16 +27,20 @@ services:
   geoserver:
     build: ./geoserver
     ports:
-      - "8008:8080"
+      - "8080:8080"
     volumes:
       - geoserver_data:/opt/geoserver/data_dir
 
   nginx:
     build: ./nginx
     ports:
-      - "81:80"
-    depends_on:
+      - "80:80"
+    volumes:
+      - /www/static
+    volumes_from:
       - web
+    links:
+      - web:web
 
 volumes:
   db_data:

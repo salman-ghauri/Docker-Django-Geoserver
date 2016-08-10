@@ -2,10 +2,10 @@ li a {
     color: green;
 }
 #map {
-    height: 330px;
+    height: 400px;
     width: 100%;
 }
 #nodelist > iframe {
-    width: 100%;
+    width: 50%;
     height: auto;
 }
