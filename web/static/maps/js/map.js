@@ -1,12 +1,12 @@
 $(document).ready(function (e) {
 
-    var geoserver_link = (window.location.host == '0.0.0.0')? '172.21.0.3' : '172.18.0.3';
+    var geoserver_link = window.location.host;
     // var geoserver_link = '172.21.0.3';
     var projection = new ol.proj.Projection({
           code: 'EPSG:29903',
           units: 'm',
           axisOrientation: 'neu'
-      });
+    });
     var flood_points = new ol.layer.Tile({
         source: new ol.source.TileWMS({
             url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
