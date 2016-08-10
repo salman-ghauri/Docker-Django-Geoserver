@@ -10,3 +10,5 @@ DB directory has the db config files.
 Geoserver directory contains the geoserver relatied config files.
 
 Same is the case with nginx.
+
+The django app is configured with **gunicorn** as application server and nginx as a proxy server.
