@@ -1,0 +1,1 @@
+http://maps.opw.ie:80/geoserver/opw/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=opw:flood_points&maxFeatures=50&outputFormat=SHAPE-ZIP
