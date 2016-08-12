@@ -1,33 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>
-        {% block title %}
-            Ireland Maps
-        {% endblock title %}
+        {% block title %} Ireland Maps {% endblock title %}
     </title>
     {% load staticfiles %}
+    {# Load the tag library #}
+    {# {% load bootstrap3 %} #}
+    {# Load CSS and JavaScript #}
+    {# {% bootstrap_css %} #}
+    {# {% bootstrap_javascript %} #}
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'maps/css/style.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'maps/css/ol.css' %}" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 </head>
 <body>
-    <div id='page'>
-        <div id='header'>
-            <h3>Ireland Flood Data</h3>
-        </div>
-        <div id="content">
-            {% block content %}
-                This content has to come!
-            {% endblock content %}
-        </div>
-        <div id="footer">
+    <div id="wrapper">
 
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">InforNite</a>
+            </div>
+          </div>
+        </nav>
+
+        <div id="content-body">
+            <!-- Sidebar -->
+            {% block side-bar %}
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        <p>Menu</p>
+                    </li>
+                    <li>
+                        Points layer <input type="checkbox" data-toggle="toggle" id="point-toggle" data-size="mini">
+                    </li>
+                    <li>
+                        Polygons Layer <input type="checkbox" data-toggle="toggle" id="polygon-toggle" data-size="mini">
+                    </li>
+                </ul>
+            </div>
+            {% endblock side-bar %}
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid" id="map-row">
+                    <div class="row" >
+                            <!-- <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a> -->
+                            {% block content %} {% endblock content %}
+
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
         </div>
     </div>
+    <!-- /#wrapper -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script type="text/javascript" src="{% static 'maps/js/ol.js' %}"></script>
     <script type="text/javascript" src="{% static 'maps/js/map.js' %}"></script>
+    <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
 
 </body>
 </html>

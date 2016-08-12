@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div>
-        This is real world! <strong>Click on the points to get details.</strong>
-    </div>
     <div id="map"></div>
-    <div id="nodelist"></div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close close-modal" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title text-center">Details</h4>
+          </div>
+          <div class="modal-body">
+          </div>
+        </div>
+
+      </div>
+    </div>
 {% endblock content %}

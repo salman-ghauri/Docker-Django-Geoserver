@@ -1,12 +1,31 @@
+(function ($) {
+    "use strict";
+    function centerModal() {
+        $(this).css('display', 'block');
+        var $dialog  = $(this).find(".modal-dialog"),
+        offset       = ($(window).height() - $dialog.height()) / 2,
+        bottomMargin = parseInt($dialog.css('marginBottom'), 10);
+
+        // Make sure you don't hide the top part of the modal w/ a negative margin if it's longer than the screen height, and keep the margin equal to the bottom margin of the modal
+        if(offset < bottomMargin) offset = bottomMargin;
+        $dialog.css("margin-top", offset);
+    }
+
+    $(document).on('show.bs.modal', '.modal', centerModal);
+    $(window).on("resize", function () {
+        $('.modal:visible').each(centerModal);
+    });
+}(jQuery));
+
 $(document).ready(function (e) {
 
+    var flood_points_check;
+    $(document).on('click', '#point-toggle', function(e) {
+        flood_points_check = $(this).prop('checked');
+        console.log(flood_points_check);
+    });
     var geoserver_link = window.location.host;
     // var geoserver_link = '172.21.0.3';
-    var projection = new ol.proj.Projection({
-          code: 'EPSG:29903',
-          units: 'm',
-          axisOrientation: 'neu'
-    });
     var flood_points = new ol.layer.Tile({
         source: new ol.source.TileWMS({
             url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
@@ -26,8 +45,23 @@ $(document).ready(function (e) {
         })
     });
     var openstreet_layer = new ol.layer.Tile({
+
         source: new ol.source.OSM()
     });
+    var layers = [openstreet_layer];
+    if (flood_points_check)
+    {
+        layers.push(flood_points);
+    }
+    else if (!flood_points_check)
+    {
+        if (layers.indexOf(flood_points) > 0)
+        {
+            var point_index = layers.indexOf(flood_points);
+            layers.splice(flood_points, 1);
+        }
+    }
+
     var map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({
@@ -35,7 +69,8 @@ $(document).ready(function (e) {
         }),
         layers: [
             openstreet_layer,
-            flood_points
+            flood_points,
+            // flood_polygons
         ],
         view: new ol.View({
             center: ol.proj.transform([-8, 52.5 ], 'EPSG:4326', 'EPSG:3857'),
@@ -57,24 +92,39 @@ $(document).ready(function (e) {
         } else {
           scale = Math.round(scale);
         }
-        // document.getElementById('scale').innerHTML = "Scale = 1 : " + scale;
     });
     map.on('singleclick', function(evt)
     {
-        document.getElementById('nodelist').innerHTML = "Loading... please wait...";
         var view = map.getView();
         var viewResolution = view.getResolution();
         var source = flood_points.getSource();
-        console.log(view.getProjection());
 
         var url = source.getGetFeatureInfoUrl(
             evt.coordinate, viewResolution, view.getProjection(),
-            {'INFO_FORMAT': 'text/html', 'FEATURE_COUNT': 50}
+            {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50}
         );
         console.log(url);
         if (url) {
-            document.getElementById('nodelist').innerHTML = '<iframe src="' + url + '"></iframe>';
+            // document.getElementById('nodelist').innerHTML = '<iframe src="' + url + '"></iframe>';
+            $.get(url).then(function (res) {
+
+                if (res.features.length)
+                {
+                    var point_info = res.features[0];
+                    console.log(point_info.id);
+                    var point_info_properties = point_info.properties;
+                    console.log(point_info_properties.name);
+                    console.log(point_info_properties.flood_reco);
+                    console.log(point_info_properties.end_date);
+                    $('#myModal .modal-body').append('<strong>Region id:</strong> '+ point_info.id+'<br/><strong>Name:</strong> '+point_info_properties.name+'<br/><strong>Flood records:</strong> '+point_info_properties.flood_reco+'<br/><strong>End date:</strong> '+point_info_properties.end_date);
+                    $('#myModal').modal();
+
+                }
+            });
         }
     });
+    $('#myModal').on('hidden.bs.modal', function () {
 
+        $('#myModal .modal-body').html('');
+    });
 });
