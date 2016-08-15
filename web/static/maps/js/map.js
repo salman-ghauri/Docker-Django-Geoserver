@@ -19,14 +19,16 @@
 
 $(document).ready(function (e) {
 
-    var flood_points_check;
-    $(document).on('click', '#point-toggle', function(e) {
-        flood_points_check = $(this).prop('checked');
-        console.log(flood_points_check);
+    // Create an empty layer gropu to be filled with user data afterwards.
+    var overlay_group = new ol.layer.Group({
+
+        title: 'Overlays',
+        layers: []
     });
     var geoserver_link = window.location.host;
-    // var geoserver_link = '172.21.0.3';
+    // Get user data from geoserver
     var flood_points = new ol.layer.Tile({
+        title: 'Ireland_flood_points',
         source: new ol.source.TileWMS({
             url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
             params: {
@@ -36,6 +38,7 @@ $(document).ready(function (e) {
         })
     });
     var flood_polygons = new ol.layer.Tile({
+        title: 'Ireland_flood_polygons',
         source: new ol.source.TileWMS({
             url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
             params: {
@@ -44,39 +47,69 @@ $(document).ready(function (e) {
             }
         })
     });
-    var openstreet_layer = new ol.layer.Tile({
-
-        source: new ol.source.OSM()
-    });
-    var layers = [openstreet_layer];
-    if (flood_points_check)
-    {
-        layers.push(flood_points);
-    }
-    else if (!flood_points_check)
-    {
-        if (layers.indexOf(flood_points) > 0)
-        {
-            var point_index = layers.indexOf(flood_points);
-            layers.splice(flood_points, 1);
-        }
-    }
-
+    // Prepare and show the map!
     var map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({
             attribution: false
         }),
         layers: [
-            openstreet_layer,
-            flood_points,
-            // flood_polygons
+            // This group is responisble for the multiple base maps.
+            new ol.layer.Group({
+                'title': 'Base maps',
+                layers: [
+                    new ol.layer.Tile({
+                        title: 'Water color',
+                        type: 'base',
+                        visible: false,
+                        source: new ol.source.Stamen({
+                            layer: 'watercolor'
+                        })
+                    }),
+                    new ol.layer.Tile({
+                        title: 'OSM',
+                        type: 'base',
+                        visible: true,
+                        source: new ol.source.OSM()
+                    }),
+                    new ol.layer.Group({
+                        title: 'Satellite and labels',
+                        type: 'base',
+                        combine: true,
+                        visible: false,
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.BingMaps({
+                                    // Get your own key at https://www.bingmapsportal.com/
+                                    key: 'Ahd_32h3fT3C7xFHrqhpKzoixGJGHvOlcvXWy6k2RRYARRsrfu7KDctzDT2ei9xB',
+                                    imagerySet: 'Aerial'
+                                })
+                            }),
+                            new ol.layer.Tile({
+                                source: new ol.source.Stamen({
+                                    layer: 'terrain-labels'
+                                })
+                            })
+                        ]
+                    })
+                ]
+            }),
+            overlay_group
         ],
         view: new ol.View({
             center: ol.proj.transform([-8, 52.5 ], 'EPSG:4326', 'EPSG:3857'),
-            zoom: 7,
+            zoom: 7.8,
         })
     });
+    // Creating instance for the Layer swither and adding it to the map for controls.
+    var layer_switcher = new ol.control.LayerSwitcher();
+    map.addControl(layer_switcher);
+    // Creating instance of popup and add it to the map.
+    var popup = new ol.Overlay.Popup();
+    map.addOverlay(popup);
+    // Adding the user data to layers_group (from above) to show them on map and in the controls.
+    overlay_group.getLayers().push(flood_points);
+    overlay_group.getLayers().push(flood_polygons);
 
     map.getView().on('change:resolution', function(evt)
     {
@@ -95,19 +128,23 @@ $(document).ready(function (e) {
     });
     map.on('singleclick', function(evt)
     {
+        var source = flood_points.getSource();
+        getFeatureInfo(evt, source);
+    });
+    var i = 1;
+    function getFeatureInfo(evt, source)
+    {
         var view = map.getView();
         var viewResolution = view.getResolution();
-        var source = flood_points.getSource();
-
         var url = source.getGetFeatureInfoUrl(
             evt.coordinate, viewResolution, view.getProjection(),
             {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50}
         );
         console.log(url);
         if (url) {
-            // document.getElementById('nodelist').innerHTML = '<iframe src="' + url + '"></iframe>';
             $.get(url).then(function (res) {
 
+                console.log(res);
                 if (res.features.length)
                 {
                     var point_info = res.features[0];
@@ -116,15 +153,21 @@ $(document).ready(function (e) {
                     console.log(point_info_properties.name);
                     console.log(point_info_properties.flood_reco);
                     console.log(point_info_properties.end_date);
-                    $('#myModal .modal-body').append('<strong>Region id:</strong> '+ point_info.id+'<br/><strong>Name:</strong> '+point_info_properties.name+'<br/><strong>Flood records:</strong> '+point_info_properties.flood_reco+'<br/><strong>End date:</strong> '+point_info_properties.end_date);
-                    $('#myModal').modal();
-
+                    var data = "<div><p><strong>Region id: </strong> "+point_info.id+"</p><p><strong>Name: </strong> "+point_info_properties.name+"</p><p><strong>Flood records: </strong> "+point_info_properties.flood_reco+"</p><p><strong>End date: </strong> "+point_info_properties.end_date+"</p></div>"
+                    popup.show(evt.coordinate, data);
                 }
+                else
+                {
+                    if (i < 2)
+                    {
+                        getFeatureInfo(evt, flood_polygons.getSource());
+                        i = i+1;
+                    }
+                }
+            }).catch(function (err) {
+                console.log(err);
             });
         }
-    });
-    $('#myModal').on('hidden.bs.modal', function () {
-
-        $('#myModal .modal-body').html('');
-    });
+        i = 1;
+    }
 });
