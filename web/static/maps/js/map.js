@@ -25,7 +25,7 @@ $(document).ready(function (e) {
         title: 'Overlays',
         layers: []
     });
-    var geoserver_link = '0.0.0.0';
+    var geoserver_link = '172.18.0.3';
     // Get user data from geoserver
     var flood_points = new ol.layer.Tile({
         title: 'Ireland_flood_points',
