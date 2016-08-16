@@ -12,7 +12,7 @@ services:
     restart: always
     depends_on:
       - db
-    command: sh -c "cd web && /usr/local/bin/gunicorn hello_world.wsgi:application -w 2 -b :8000"
+    command: sh -c "cd web && /usr/local/bin/gunicorn hello_world.wsgi:application -w 2 -b :8000 --reload"
 
   db:
     env_file: .env
@@ -40,7 +40,9 @@ services:
       - /www/static
     volumes_from:
       - web
+      - geoserver
     links:
+      - geoserver:geoserver
       - web:web
 
 volumes:

@@ -25,7 +25,7 @@ $(document).ready(function (e) {
         title: 'Overlays',
         layers: []
     });
-    var geoserver_link = window.location.host;
+    var geoserver_link = '0.0.0.0';
     // Get user data from geoserver
     var flood_points = new ol.layer.Tile({
         title: 'Ireland_flood_points',
@@ -130,8 +130,10 @@ $(document).ready(function (e) {
     {
         var source = flood_points.getSource();
         getFeatureInfo(evt, source);
+
     });
     var i = 1;
+
     function getFeatureInfo(evt, source)
     {
         var view = map.getView();
@@ -140,20 +142,22 @@ $(document).ready(function (e) {
             evt.coordinate, viewResolution, view.getProjection(),
             {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50}
         );
+
         console.log(url);
         if (url) {
-            $.get(url).then(function (res) {
+            $.ajax({
+                url: '/maps/getFeatureInfo/',
+                type: 'POST',
+                dataType: 'json',
+                data: {'url': url, 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()}
+            })
+            .then(function (res) {
 
-                console.log(res);
                 if (res.features.length)
                 {
                     var point_info = res.features[0];
-                    console.log(point_info.id);
                     var point_info_properties = point_info.properties;
-                    console.log(point_info_properties.name);
-                    console.log(point_info_properties.flood_reco);
-                    console.log(point_info_properties.end_date);
-                    var data = "<div><p><strong>Region id: </strong> "+point_info.id+"</p><p><strong>Name: </strong> "+point_info_properties.name+"</p><p><strong>Flood records: </strong> "+point_info_properties.flood_reco+"</p><p><strong>End date: </strong> "+point_info_properties.end_date+"</p></div>"
+                    var data = "<div><p><strong>Region id: </strong> "+point_info.id+"</p><p><strong>Name: </strong> "+point_info_properties.name+"</p><p><strong>Flood records: </strong> "+point_info_properties.flood_reco+"</p><p><strong>End date: </strong> "+point_info_properties.end_date+"</p></div>";
                     popup.show(evt.coordinate, data);
                 }
                 else
@@ -164,7 +168,9 @@ $(document).ready(function (e) {
                         i = i+1;
                     }
                 }
-            }).catch(function (err) {
+                console.log(res);
+            })
+            .catch(function(err) {
                 console.log(err);
             });
         }
