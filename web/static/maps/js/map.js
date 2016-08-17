@@ -25,8 +25,9 @@ $(document).ready(function (e) {
         title: 'Overlays',
         layers: []
     });
-    var geoserver_link = '172.18.0.3';
-    // Get user data from geoserver
+    console.log(window.location.hostname);
+    var geoserver_link = window.location.hostname;
+    // Get user data from geoserver - Map layers.
     var flood_points = new ol.layer.Tile({
         title: 'Ireland_flood_points',
         source: new ol.source.TileWMS({
@@ -47,6 +48,97 @@ $(document).ready(function (e) {
             }
         })
     });
+    var coastal_high = new ol.layer.Tile({
+        title: 'Coastal - high risk',
+        source: new ol.source.TileWMS({
+            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+            params: {
+                'LAYERS': 'flood_data:coastal - 10_ eap',
+                'VERSION': '1.1.1'
+            }
+        })
+    });
+    var coastal_medium = new ol.layer.Tile({
+        title: 'Coastal - medium risk',
+        source: new ol.source.TileWMS({
+            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+            params: {
+                'LAYERS': 'flood_data:coastal - 0.5_ eap',
+                'VERSION': '1.1.1'
+            }
+        })
+    });
+    var coastal_low = new ol.layer.Tile({
+        title: 'Coastal - low risk',
+        source: new ol.source.TileWMS({
+            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+            params: {
+                'LAYERS': 'flood_data:coastal - 0.1_ eap',
+                'VERSION': '1.1.1'
+            }
+        })
+    });
+    var fluvial_high = new ol.layer.Tile({
+        title: 'Fluvial - high risk',
+        source: new ol.source.TileWMS({
+            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+            params: {
+                'LAYERS': 'flood_data:fluvial - 10_',
+                'VERSION': '1.1.1'
+            }
+        })
+    });
+    var fluvial_medium = new ol.layer.Tile({
+        title: 'Fluvial - medium risk',
+        source: new ol.source.TileWMS({
+            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+            params: {
+                'LAYERS': 'flood_data:fluvial - 1_',
+                'VERSION': '1.1.1'
+            }
+        })
+    });
+    var fluvial_low = new ol.layer.Tile({
+        title: 'Fluvial - low risk',
+        source: new ol.source.TileWMS({
+            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+            params: {
+                'LAYERS': 'flood_data:fluvial - 0.1_',
+                'VERSION': '1.1.1'
+            }
+        })
+    });
+    var defence_embarkment = new ol.layer.Tile({
+        title: 'Defence Embarkement',
+        source: new ol.source.TileWMS({
+            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+            params: {
+                'LAYERS': 'flood_data:defence embankment',
+                'VERSION': '1.1.1'
+            }
+        })
+    });
+    var defence_wall = new ol.layer.Tile({
+        title: 'Defence wall',
+        source: new ol.source.TileWMS({
+            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+            params: {
+                'LAYERS': 'flood_data:defence wall',
+                'VERSION': '1.1.1'
+            }
+        })
+    });
+    var defended_areas = new ol.layer.Tile({
+        title: 'Defended Areas',
+        source: new ol.source.TileWMS({
+            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+            params: {
+                'LAYERS': 'flood_data:defended areas',
+                'VERSION': '1.1.1'
+            }
+        })
+    });
+
     // Prepare and show the map!
     var map = new ol.Map({
         target: 'map',
@@ -97,8 +189,8 @@ $(document).ready(function (e) {
             overlay_group
         ],
         view: new ol.View({
-            center: ol.proj.transform([-8, 52.5 ], 'EPSG:4326', 'EPSG:3857'),
-            zoom: 7.8,
+            center: ol.proj.transform([-8.62635, 52.66751 ], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 14.2,
         })
     });
     // Creating instance for the Layer swither and adding it to the map for controls.
@@ -108,8 +200,15 @@ $(document).ready(function (e) {
     var popup = new ol.Overlay.Popup();
     map.addOverlay(popup);
     // Adding the user data to layers_group (from above) to show them on map and in the controls.
-    overlay_group.getLayers().push(flood_points);
-    overlay_group.getLayers().push(flood_polygons);
+    overlay_group.getLayers().push(coastal_high);
+    overlay_group.getLayers().push(coastal_medium);
+    overlay_group.getLayers().push(coastal_low);
+    overlay_group.getLayers().push(fluvial_high);
+    overlay_group.getLayers().push(fluvial_medium);
+    overlay_group.getLayers().push(fluvial_low);
+    overlay_group.getLayers().push(defence_embarkment);
+    overlay_group.getLayers().push(defence_wall);
+    overlay_group.getLayers().push(defended_areas);
 
     map.getView().on('change:resolution', function(evt)
     {
@@ -126,12 +225,12 @@ $(document).ready(function (e) {
           scale = Math.round(scale);
         }
     });
-    map.on('singleclick', function(evt)
-    {
-        var source = flood_points.getSource();
-        getFeatureInfo(evt, source);
+    // map.on('singleclick', function(evt)
+    // {
+    //     var source = flood_points.getSource();
+    //     getFeatureInfo(evt, source);
 
-    });
+    // });
     var i = 1;
 
     function getFeatureInfo(evt, source)
