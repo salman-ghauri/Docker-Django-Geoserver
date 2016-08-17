@@ -192,6 +192,10 @@ $(document).ready(function (e) {
     overlay_group.getLayers().push(defence_wall);
     overlay_group.getLayers().push(defended_areas);
 
+    ol.control.LayerSwitcher.forEachRecursive(overlay_group, function(layer) {
+        layer.setVisible(false);
+    });
+
     map.getView().on('change:resolution', function(evt)
     {
         var resolution = evt.target.get('resolution');
