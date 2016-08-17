@@ -7,7 +7,7 @@ html, body {
 }
 
 #map {
-    height: 500px;
+    height: 100%;
 }
 #footer {
     background: red;
