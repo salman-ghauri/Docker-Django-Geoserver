@@ -6,8 +6,9 @@ html, body {
   font-size: small;
 }
 
-#map {
-    height: 100%;
+.map {
+  height: 100vh;
+  width: 100%;
 }
 #footer {
     background: red;

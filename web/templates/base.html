@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'maps/css/ol.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'maps/css/ol3-layerswitcher.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'maps/css/ol3-popup.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'maps/css/ol3gm.css' %}">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 </head>
@@ -36,7 +37,9 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <script type="text/javascript" src="{% static 'maps/js/ol.js' %}"></script>
+    <!--<script type="text/javascript" src="{% static 'maps/js/ol.js' %}"></script>-->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAc7VVqWXWgsYjg44VTGLVcAg-pphZI7Lg"></script>
+    <script type="text/javascript" src='{% static "maps/js/ol3gm.js" %}'></script>
     <script type="text/javascript" src='{% static "maps/js/ol3-layerswitcher.js" %}'></script>
     <script type="text/javascript" src='{% static "maps/js/ol3-popup.js" %}'></script>
     <script type="text/javascript" src="{% static 'maps/js/map.js' %}"></script>
