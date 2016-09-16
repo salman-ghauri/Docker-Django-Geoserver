@@ -16,39 +16,107 @@
     <link rel="stylesheet" type="text/css" href="{% static 'maps/css/ol.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'maps/css/ol3-layerswitcher.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'maps/css/ol3-popup.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'maps/css/ol3gm.css' %}">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 </head>
 <body>
 
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="">Flood Check Ireland - InforNite</a>
-        </div>
-      </div>
-    </nav>
+    <div class="container-full">
+        <!-- <div class="col-xs-11"> </div>-->
+            <div class="under">
+                <div class="navbar-sm">
+                    <div class="navbar-primary">
+                       <nav class="navbar navbar-static-top" role="navigation">
+                          <!-- Brand and toggle get grouped for better mobile display -->
+                          <div class="navbar-header">
+                              <a class="navbar-brand" href="">Flood Check Ireland</a>
+                          </div>
+                            <div class="right-menu">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="#">DATA SERVICES</a></li>
+                                    <li><a href="#">FORUM</a></li>
+                                    <li><a href="#"> ABOUT</a></li>
+                                </ul>
+                            </div>
+                      </nav>
+                    </div>
+                </div>
 
-    <div id="map-div">
-        {% block content %} {% endblock content %}
+                <div id="map-div">
+                    {% block content %} {% endblock content %}
+                </div>
+
+                <div id="footer">
+                    <div class="social">
+                        <a href="#"><img src="/static/img/fb.png" title="Facebook" /></a>
+                        <a href="#"><img src="/static/img/share.png" title="Share" /></a>
+                        <a href="#"><img src="/static/img/gplus.png" title="Google Plus" /></a>
+                        <a href="#"><img src="/static/img/twitter.png" title="Twitter" /></a>
+                    </div>
+                </div>
+            </div>
+            <div class="above">
+                <div class="options">
+
+                    <a href="#"><img src="/static/img/marker.png" class="img-responsive" /></a>
+                    <a href="#"><img src="/static/img/search.png" class="img-responsive" /></a>
+
+                </div>
+            </div>
+
+        <!-- <div class="col-xs-1"> </div>-->
+
+
     </div>
-    <!-- /#wrapper -->
+
+    <!-- Modal for the terms and conditions: -->
+
+    <div id="terms-modal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-one">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Disclaimer</h2  >
+          </div>
+          <div class="modal-body">
+            <p>Some text in the modal.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" id="accept-terms">
+                <strong>Accept and Proceed</strong>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="location-modal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-two">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <!-- <div class="modal-header heading-two">
+            <h4>Search location</h4>
+          </div> -->
+          <div class="modal-body">
+            <div class="search-box">
+                <input type="text" name="find-location" class="form-control" id="location-finder" placeholder="Type your address and hit search..." />
+                <input type="submit" name="submit" value="Search" class="btn btn-default" id="do-search">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <!--<script type="text/javascript" src="{% static 'maps/js/ol.js' %}"></script>-->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAc7VVqWXWgsYjg44VTGLVcAg-pphZI7Lg"></script>
-    <script type="text/javascript" src='{% static "maps/js/ol3gm.js" %}'></script>
+    <script type="text/javascript" src="{% static 'maps/js/ol.js' %}"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAc7VVqWXWgsYjg44VTGLVcAg-pphZI7Lg"></script>
     <script type="text/javascript" src='{% static "maps/js/ol3-layerswitcher.js" %}'></script>
     <script type="text/javascript" src='{% static "maps/js/ol3-popup.js" %}'></script>
     <script type="text/javascript" src="{% static 'maps/js/map.js' %}"></script>
-    <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-    </script>
 
 </body>
 </html>

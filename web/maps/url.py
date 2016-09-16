@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from . import views
+from maps import views
 
 urlpatterns = [
 	url(r'^$', views.index, name = 'index'),

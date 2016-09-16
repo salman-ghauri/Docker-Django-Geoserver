@@ -1,9 +1,25 @@
-$(document).ready(function() {
+$(document).ready(function()
+{
+  /*
+  * @Handeling the modals
+  * the @terms and #location
+  */
+
+  $('#terms-modal').modal({
+    show: true,
+    backdrop: 'static',
+    keyboard: false
+  });
+
+  $('#accept-terms').on('click', function (eap)
+  {
+    $('#terms-modal').slideUp(1000);
+    $('#terms-modal').modal('hide');
+
+    $('#location-modal').modal('show');
+  });
 
   var center = [-7908084, 6177492];
-
-  // This dummy layer tells Google Maps to switch to its default map type
-  var googleLayer = new olgm.layer.Google();
 
   // Create an empty layer gropu to be filled with user data afterwards.
   var overlay_group = new ol.layer.Group({
@@ -11,7 +27,6 @@ $(document).ready(function() {
       title: 'Flood Information',
       layers: []
   });
-  console.log(window.location.hostname);
   var geoserver_link = window.location.hostname;
   // Get user data from geoserver - Map layers.
   var flood_points = new ol.layer.Tile({
@@ -126,12 +141,16 @@ $(document).ready(function() {
   });
 
   var map = new ol.Map({
-    // use OL3-Google-Maps recommended default interactions
-    interactions: olgm.interaction.defaults(),
     layers: [
     new ol.layer.Group({
       'title': 'Base maps',
       layers: [
+          new ol.layer.Tile({
+              title: 'OSM',
+              type: 'base',
+              visible: true,
+              source: new ol.source.OSM()
+          }),
           new ol.layer.Tile({
             title: 'Google',
             type: 'base',
@@ -144,25 +163,16 @@ $(document).ready(function() {
               ]
             })
           }),
-          new ol.layer.Tile({
-              title: 'OSM',
-              type: 'base',
-              visible: true,
-              source: new ol.source.OSM()
-          }),
         ]
       }),
       overlay_group
     ],
     target: 'map',
     view: new ol.View({
-      center: ol.proj.transform([-8.62635, 52.66751 ], 'EPSG:4326', 'EPSG:3857'),
-      zoom: 14
+      center: ol.proj.transform([-8.2439, 53.4129 ], 'EPSG:4326', 'EPSG:3857'), //-8.62635, 52.66751
+      zoom: 8 //14
     })
   });
-  // map.getLayers().push(new olgm.layer.Google({
-  //     mapTypeId: google.maps.MapTypeId.HYBRID
-  // }));
   // Creating instance for the Layer swither and adding it to the map for controls.
   var layer_switcher = new ol.control.LayerSwitcher();
   map.addControl(layer_switcher);
@@ -250,6 +260,4 @@ $(document).ready(function() {
       }
       i = 1;
   }
-  var olGM = new olgm.OLGoogleMaps({map: map}); // map is the ol.Map instance
-  olGM.activate();
 });
