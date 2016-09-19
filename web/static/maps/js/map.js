@@ -1,10 +1,14 @@
+// Hide the floating panel on page start
+$('.floating-panel').hide();
+
 $(document).ready(function()
 {
   /*
   * @Handeling the modals
   * the @terms and #location
   */
-
+  var tray_open = false;
+  $('.outer-info').hide();
   $('#terms-modal').modal({
     show: true,
     backdrop: 'static',
@@ -15,10 +19,28 @@ $(document).ready(function()
   {
     $('#terms-modal').slideUp(1000);
     $('#terms-modal').modal('hide');
+    $('#location-modal').modal('show');
+    $('.floating-panel').show(500);
+  });
 
+  $('#search-location').on('click', function (e)
+  {
+
+    e.preventDefault();
     $('#location-modal').modal('show');
   });
 
+  $('#floating-swipe').on('click', function (e)
+  {
+    $('.buttons').toggle(200);
+    $('.outer-info').toggle(400);
+    $('#check-1').toggleClass('glyphicon glyphicon-chevron-right glyphicon glyphicon-chevron-left');
+  });
+
+  /*
+  * @Map and openlayers
+  * @Layers and geoserver.
+  */
   var center = [-7908084, 6177492];
 
   // Create an empty layer gropu to be filled with user data afterwards.

@@ -9,6 +9,7 @@ html, body {
 .map {
   height: 86vh;
   width: 100%;
+  position: relative;
 }
 #footer {
   background: #f3f1ed;
@@ -114,8 +115,7 @@ body {
   width: 80%;
   float: left;
   border-radius: 0px;
-  /* padding: 14px; */
-  /*margin-left: 17px;*/
+
   background: #ececec;
   color: black;
 }
@@ -134,23 +134,127 @@ body {
   /*position: relative;*/
 }
 .under {
-    /*position: absolute;
-    width: 90%;*/
-        width: 94%;
-    float: left;
+  width: 94%;
+  float: left;
 }
 .above {
-  /*position: absolute;
-  z-index: 10;
-  left: 90%;
   background: black;
   height: 100vh;
-  width: 10%;*/
-  background: black;
-    height: 100vh;
-    width: 6%;
-    float: left;
+  width: 6%;
+  float: left;
 }
 .options {
-      padding: 15em 1em;
+  padding: 15em 1em;
 }
+.floating-panel {
+  position: absolute;
+  bottom: 10%;
+  left: 0%;
+  width: 58%;
+  height: 200px;
+}
+.detail {
+  color: #dcdcdc;
+  font-size: 10px;
+  font-weight: 100;
+  line-height: 1;
+  padding: 15px 15px 0 15px;
+  width: 34%;
+  float: left;
+  background: black;
+  height: inherit;
+}
+#floatin-head-1 {
+  font-size: 16px;
+}
+#floatin-head-2 {
+  font-size: 17px;
+  text-align: center;
+}
+#floatin-map {
+  text-align: center;
+}
+/*.buttons {
+  width: 12%;
+  width: 5%;
+  height: inherit;
+  float: left;
+}
+#floating-one {
+      height: 33%;
+    background: #0041ab;
+    color: #ffffff;
+}
+#floating-two {
+  height: 34%;
+    background: rgba(0, 112, 171, 0.86);
+    color: #ffffff;
+}
+#floating-three {
+  height: 33%;
+  background: #768e94;
+    color: #ffffff;
+}*/
+#marker-box {
+  padding-bottom: 20px;
+}
+#floating-swipe.clicked{
+    margin-left:500px;
+    -webkit-transition:1s; // you don't need to specify this again
+ }
+.outer-info {
+  background: white none repeat scroll 0 0;
+  float: left;
+  height: inherit;
+  overflow: auto;
+  width: 66%;
+}
+#floating-swipe, #floating-swipe:hover {
+  color: #dcdcdc;
+  text-decoration: none;
+}
+.hide {
+  display: none;
+}
+.danger {
+  background: #0041ab;
+  padding: 5px;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: bolder;
+  width: 18%;
+  float: left;
+}
+.medium {
+  background: rgba(0, 112, 171, 0.86);
+  padding: 5px;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: bolder;
+  width: 18%;
+  float: left;
+}
+.low {
+  background: #768e94;
+  padding: 5px;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: bolder;
+  width: 18%;
+  float: left;
+}
+
+.text {
+  float: left;
+  width: 75%;
+  padding: 4px;
+}
+.inner-content {
+  padding: 1px;
+}
+
+
+
+
+
+
