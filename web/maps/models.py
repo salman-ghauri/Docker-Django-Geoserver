@@ -8,7 +8,7 @@ class Question(models.Model):
 	question_text = models.CharField(max_length=200)
 	question_type = models.CharField(max_length=50)
 	pud_date = models.DateTimeField('date published')
-		
+
 class Choice(models.Model):
 
 	def __unicode__(self):

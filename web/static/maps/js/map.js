@@ -1,14 +1,10 @@
-// Hide the floating panel on page start
-$('.floating-panel').hide();
-
 $(document).ready(function()
 {
   /*
   * @Handeling the modals
   * the @terms and #location
   */
-  var tray_open = false;
-  $('.outer-info').hide();
+  $('.outer-info').addClass('hide');
   $('#terms-modal').modal({
     show: true,
     backdrop: 'static',
@@ -20,12 +16,11 @@ $(document).ready(function()
     $('#terms-modal').slideUp(1000);
     $('#terms-modal').modal('hide');
     $('#location-modal').modal('show');
-    $('.floating-panel').show(500);
+    $('.floating-panel').removeClass('hide');
   });
 
   $('#search-location').on('click', function (e)
   {
-
     e.preventDefault();
     $('#location-modal').modal('show');
   });
@@ -33,15 +28,18 @@ $(document).ready(function()
   $('#floating-swipe').on('click', function (e)
   {
     $('.buttons').toggle(200);
-    $('.outer-info').toggle(400);
+    // $('.outer-info').toggle(400);
+    console.log($('#outer-info').attr('class'));
+    $('#outer-info').toggleClass('hide');
+    // $('#outer-info').toggle(300);
     $('#check-1').toggleClass('glyphicon glyphicon-chevron-right glyphicon glyphicon-chevron-left');
   });
-
   /*
   * @Map and openlayers
   * @Layers and geoserver.
   */
-  var center = [-7908084, 6177492];
+  // var center = [-7908084, 6177492];
+  // var center = [-52.6680, 8.6305];
 
   // Create an empty layer gropu to be filled with user data afterwards.
   var overlay_group = new ol.layer.Group({
@@ -164,7 +162,7 @@ $(document).ready(function()
 
   var map = new ol.Map({
     layers: [
-    new ol.layer.Group({
+     new ol.layer.Group({
       'title': 'Base maps',
       layers: [
           new ol.layer.Tile({
@@ -187,12 +185,13 @@ $(document).ready(function()
           }),
         ]
       }),
-      overlay_group
+     flood_polygons
+      // overlay_group
     ],
     target: 'map',
     view: new ol.View({
-      center: ol.proj.transform([-8.2439, 53.4129 ], 'EPSG:4326', 'EPSG:3857'), //-8.62635, 52.66751
-      zoom: 8 //14
+      center: ol.proj.transform([-8.62635, 52.66751], 'EPSG:4326', 'EPSG:3857'), // -8.2439, 53.4129
+      zoom: 12 //8
     })
   });
   // Creating instance for the Layer swither and adding it to the map for controls.
@@ -231,6 +230,77 @@ $(document).ready(function()
       } else {
         scale = Math.round(scale);
       }
+  });
+
+  /*
+  * Ability to add marker
+  * Move the marker
+  * get the new coordinates of the marker.
+  */
+  var last_coord = [];
+  var point_feature = new ol.Feature(new ol.geom.Point(map.getView().getCenter()));
+  var drag_interaction = new ol.interaction.Modify({
+    features: new ol.Collection([point_feature]),
+    style: null
+  });
+
+  var marker_layer = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      features: [point_feature]
+    }),
+    style: new ol.style.Style({
+      image: new ol.style.Icon({
+        src: 'http://openlayers.org/en/v3.8.2/examples/data/icon.png'
+      })
+    })
+  });
+
+  $('#marker-box').on('click', function()
+  {
+    map.getLayers().push(marker_layer);
+    map.addInteraction(drag_interaction);
+    point_feature.on('change', function (e) {
+      last_coord = this.getGeometry().getCoordinates();
+      last_coord = ol.proj.transform(last_coord, 'EPSG:3857', 'EPSG:4326');
+    }, point_feature);
+  });
+  /*
+  * Change the cursor
+  * make the pointer
+  * on the features.
+  */
+  var target = map.getTarget();
+  var jTarget = typeof target === "string" ? $("#" + target) : $(target);
+
+  $(map.getViewport()).on('mousemove', function (e) {
+      var pixel = map.getEventPixel(e.originalEvent);
+      var hit = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+          return true;
+      });
+      if (hit) {
+          jTarget.css("cursor", "pointer");
+      } else {
+          jTarget.css("cursor", "");
+      }
+  });
+  $('#map').on('mouseup', function (e) {
+    // alert('go');
+    // console.log('moved to: ' + last_coord);
+    lat = last_coord[0];
+    lon = last_coord[1];
+    $.ajax({
+      url: '/maps/getPointInfo/',
+      type: 'POST',
+      data: {
+        'coords': 'adsfasdf',
+        lat: lat,
+        lon: lon,
+        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+      }
+    })
+    .then(function (res) {
+      console.log(res);
+    });
   });
   // map.on('singleclick', function(evt)
   // {

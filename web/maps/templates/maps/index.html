@@ -3,7 +3,7 @@
 {% block content %}
     <div id="map" class="map"></div>
     {% csrf_token %}
-    <div class="floating-panel">
+    <div class="floating-panel hide">
         <div class="detail">
             <p>
                 <a href="javascript:;" id="floating-swipe">
@@ -18,14 +18,7 @@
                 The blue colors on the map represents different levels of flood risks for the area. The maps are created using computer modeling and cover allparts of Ireland.
             </p>
         </div>
-        <!--
-        <div class="buttons">
-            <div id="floating-one">High</div>
-            <div id="floating-two">Med</div>
-            <div id="floating-three">Low</div>
-        </div>
-        -->
-        <div class="outer-info">
+        <div class="outer-info" id="outer-info">
             <div class="inner-content">
                 <div><div class="danger">High Risk</div><p class="text">On average flood will occur once every 30 years.</p></div>
 

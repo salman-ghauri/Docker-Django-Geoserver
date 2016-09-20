@@ -215,6 +215,7 @@ body {
 }
 .hide {
   display: none;
+  z-index: -12;
 }
 .danger {
   background: #0041ab;
