@@ -10,10 +10,21 @@ class Question(models.Model):
 	pud_date = models.DateTimeField('date published')
 
 class Choice(models.Model):
-
 	def __unicode__(self):
 		return self.choice_text
 
 	question = models.ForeignKey(Question)
 	choice_text = models.CharField(max_length = 200)
 	votes = models.IntegerField(default = 0)
+
+class FloodPolys(models.Model):
+	# def __unicode__(self):
+	# 	return self.name, self.id, self.end_date, self.flood_reco
+
+	gid = models.AutoField(primary_key=True)
+	id = models.IntegerField(blank=True, null=True)
+	name = models.CharField(max_length=254, blank=True, null=True)
+	end_date = models.DateField(blank=True, null=True)
+	flood_reco = models.IntegerField(blank=True, null=True)
+	geom = models.TextField(blank=True, null=True)  # This field type is a guess.
+

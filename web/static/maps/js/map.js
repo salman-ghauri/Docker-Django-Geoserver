@@ -4,7 +4,7 @@ $(document).ready(function()
   * @Handeling the modals
   * the @terms and #location
   */
-  $('.outer-info').addClass('hide');
+  $('.outer-info').hide();
   $('#terms-modal').modal({
     show: true,
     backdrop: 'static',
@@ -28,10 +28,7 @@ $(document).ready(function()
   $('#floating-swipe').on('click', function (e)
   {
     $('.buttons').toggle(200);
-    // $('.outer-info').toggle(400);
-    console.log($('#outer-info').attr('class'));
-    $('#outer-info').toggleClass('hide');
-    // $('#outer-info').toggle(300);
+    $('.outer-info').toggle(200);
     $('#check-1').toggleClass('glyphicon glyphicon-chevron-right glyphicon glyphicon-chevron-left');
   });
   /*
@@ -161,6 +158,7 @@ $(document).ready(function()
   });
 
   var map = new ol.Map({
+    controls:ol.control.defaults({ attribution: false}),
     layers: [
      new ol.layer.Group({
       'title': 'Base maps',
@@ -191,12 +189,14 @@ $(document).ready(function()
     target: 'map',
     view: new ol.View({
       center: ol.proj.transform([-8.62635, 52.66751], 'EPSG:4326', 'EPSG:3857'), // -8.2439, 53.4129
-      zoom: 12 //8
+      zoom: 8
     })
   });
+
   // Creating instance for the Layer swither and adding it to the map for controls.
   var layer_switcher = new ol.control.LayerSwitcher();
-  map.addControl(layer_switcher);
+  // map.addControl(layer_switcher);
+
   // Creating instance of popup and add it to the map.
   var popup = new ol.Overlay.Popup();
   map.addOverlay(popup);
@@ -216,6 +216,7 @@ $(document).ready(function()
       layer.setOpacity(0.5);
   });
 
+  flood_polygons.setOpacity(0.5);
   map.getView().on('change:resolution', function(evt)
   {
       var resolution = evt.target.get('resolution');
@@ -250,11 +251,15 @@ $(document).ready(function()
     }),
     style: new ol.style.Style({
       image: new ol.style.Icon({
-        src: 'http://openlayers.org/en/v3.8.2/examples/data/icon.png'
+        src: 'http://s22.postimg.org/nyt5oxv6p/location_marker.png'
       })
     })
   });
 
+  /*
+  * @listner for creating marer layer
+  * return new @cordinates on each point movment.
+  */
   $('#marker-box').on('click', function()
   {
     map.getLayers().push(marker_layer);
@@ -264,6 +269,7 @@ $(document).ready(function()
       last_coord = ol.proj.transform(last_coord, 'EPSG:3857', 'EPSG:4326');
     }, point_feature);
   });
+
   /*
   * Change the cursor
   * make the pointer
@@ -271,7 +277,6 @@ $(document).ready(function()
   */
   var target = map.getTarget();
   var jTarget = typeof target === "string" ? $("#" + target) : $(target);
-
   $(map.getViewport()).on('mousemove', function (e) {
       var pixel = map.getEventPixel(e.originalEvent);
       var hit = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
@@ -283,6 +288,7 @@ $(document).ready(function()
           jTarget.css("cursor", "");
       }
   });
+  var old_val = $('.inner-content').html();
   $('#map').on('mouseup', function (e) {
     // alert('go');
     // console.log('moved to: ' + last_coord);
@@ -299,14 +305,29 @@ $(document).ready(function()
       }
     })
     .then(function (res) {
-      console.log(res);
+      output = JSON.parse(res);
+      if ($.isEmptyObject(output))
+      {
+        console.log('nothing found');
+        $('.inner-content').html(old_val);
+      }
+      else {
+        keys = Object.keys(output);
+        console.log(output);
+        $('.inner-content').html(
+             '<strong>Record Id: </strong>'+output['id']+'<hr>'+
+             '<strong>Name: </strong>'+output['name']+'<hr>'+
+             '<strong>Flood Counts: </strong>'+output['flood_record']+'<hr>'+
+             '<strong>End Date: </strong>'+output['end_date']+'<hr>'
+        );
+      }
     });
   });
+
   // map.on('singleclick', function(evt)
   // {
   //     var source = flood_points.getSource();
   //     getFeatureInfo(evt, source);
-
   // });
   var i = 1;
 

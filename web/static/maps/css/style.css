@@ -62,29 +62,32 @@ body {
   height: inherit;
 }
 .ol-zoom{
-  top: 78% !important;
-  left: 95% !important;
+    top: 86% !important;
+    left: 92% !important;
+    bottom: 3%;
+    right: 4% !important;
 }
 .ol-zoom-in, .ol-zoom-out {
     width: 28px !important;
-    height: 27px !important;
-    /*background: white !important;*/
+    height: 30px !important;
     color: black !important;
     background-image: linear-gradient(#cccccc, #F5F5F5, #cccccc);
-    border: 2px solid #CCCCCC !important;
+    /*border: 2px solid #CCCCCC !important;*/
     border-radius: 0 !important;
     margin: 0 !important;
+}
+.ol-control {
+  background-color: none !important;
+  background-color: rgba(255, 255, 255, 0)   !important;
 }
 .social {
   padding: 3px 12px;
 }
 .modal-one {
-    margin: 47px 0 0 0;
-
+    margin: 0;
     width: 100%;
     border-radius: 0;
-    height: 50vh;
-    overflow-y: auto;
+    /*overflow-y: auto;*/
 }
 .modal-two {
     margin: 0px;
@@ -93,9 +96,13 @@ body {
     left: 20%;
     right: 20%;
 }
-.modal-content {
+#terms-modal .modal-content {
     border-radius: 0px;
-    border: 2px solid #FFf;
+    border: 2px solid #FFF;
+    height: 55vh;
+}
+#terms-modal .modal-footer {
+   padding-top: 13%;
 }
 .modal-footer {
   border-top: none;
@@ -107,7 +114,7 @@ body {
   background: #333;
   color: #ddd;
   padding: 15px;
-  border-radius: 0px;
+  border-radius: 46%;
   bottom: 0px;
   border: 1px;
 }
@@ -115,7 +122,6 @@ body {
   width: 80%;
   float: left;
   border-radius: 0px;
-
   background: #ececec;
   color: black;
 }
@@ -129,9 +135,6 @@ body {
 }
 .search-box {
   padding: 5px;
-}
-.container-full {
-  /*position: relative;*/
 }
 .under {
   width: 94%;
@@ -150,8 +153,8 @@ body {
   position: absolute;
   bottom: 10%;
   left: 0%;
-  width: 58%;
   height: 200px;
+  box-shadow: 0px 4px 10px rgb(31, 30, 30);
 }
 .detail {
   color: #dcdcdc;
@@ -159,7 +162,7 @@ body {
   font-weight: 100;
   line-height: 1;
   padding: 15px 15px 0 15px;
-  width: 34%;
+  width: 24em;
   float: left;
   background: black;
   height: inherit;
@@ -174,48 +177,19 @@ body {
 #floatin-map {
   text-align: center;
 }
-/*.buttons {
-  width: 12%;
-  width: 5%;
-  height: inherit;
-  float: left;
-}
-#floating-one {
-      height: 33%;
-    background: #0041ab;
-    color: #ffffff;
-}
-#floating-two {
-  height: 34%;
-    background: rgba(0, 112, 171, 0.86);
-    color: #ffffff;
-}
-#floating-three {
-  height: 33%;
-  background: #768e94;
-    color: #ffffff;
-}*/
 #marker-box {
   padding-bottom: 20px;
 }
-#floating-swipe.clicked{
-    margin-left:500px;
-    -webkit-transition:1s; // you don't need to specify this again
- }
 .outer-info {
   background: white none repeat scroll 0 0;
   float: left;
   height: inherit;
   overflow: auto;
-  width: 66%;
+  width: 36em;
 }
 #floating-swipe, #floating-swipe:hover {
   color: #dcdcdc;
   text-decoration: none;
-}
-.hide {
-  display: none;
-  z-index: -12;
 }
 .danger {
   background: #0041ab;
@@ -247,14 +221,18 @@ body {
 
 .text {
   float: left;
-  width: 75%;
-  padding: 4px;
+  margin: 0;
+  border-bottom: 1px solid #dcdcdc;
+  width: 82%;
+  padding: 2.5px;
+}
+.text img {
+  float: right;
 }
 .inner-content {
   padding: 1px;
+  height: inherit;
 }
-
-
 
 
 
