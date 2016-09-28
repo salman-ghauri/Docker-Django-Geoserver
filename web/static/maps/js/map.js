@@ -35,16 +35,15 @@ $(document).ready(function()
   * @Map and openlayers
   * @Layers and geoserver.
   */
-  // var center = [-7908084, 6177492];
-  // var center = [-52.6680, 8.6305];
+  var geoserver_link = window.location.hostname;
 
+/*
   // Create an empty layer gropu to be filled with user data afterwards.
   var overlay_group = new ol.layer.Group({
 
       title: 'Flood Information',
       layers: []
   });
-  var geoserver_link = window.location.hostname;
   // Get user data from geoserver - Map layers.
   var flood_points = new ol.layer.Tile({
       title: 'Ireland_flood_points',
@@ -96,35 +95,6 @@ $(document).ready(function()
           }
       })
   });
-  var fluvial_high = new ol.layer.Tile({
-      title: 'Fluvial - high risk',
-      source: new ol.source.TileWMS({
-          url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-          params: {
-              'LAYERS': 'flood_data:fluvial - 10_',
-              'VERSION': '1.1.1'
-          }
-      })
-  });
-  var fluvial_medium = new ol.layer.Tile({
-      title: 'Fluvial - medium risk',
-      source: new ol.source.TileWMS({
-          url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-          params: {
-              'LAYERS': 'flood_data:fluvial - 1_',
-              'VERSION': '1.1.1'
-          }
-      })
-  });
-  var fluvial_low = new ol.layer.Tile({
-      title: 'Fluvial - low risk',
-      source: new ol.source.TileWMS({
-          url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-          params: {
-              'LAYERS': 'flood_data:fluvial - 0.1_',
-              'VERSION': '1.1.1'
-          }
-      })
   });
   var defence_embarkment = new ol.layer.Tile({
       title: 'Defence Embarkement',
@@ -156,7 +126,37 @@ $(document).ready(function()
           }
       })
   });
-
+*/
+  var fluvial_high = new ol.layer.Tile({
+      title: 'Fluvial - high risk',
+      source: new ol.source.TileWMS({
+          url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+          params: {
+              'LAYERS': 'flood_data:fluvial_10',
+              'VERSION': '1.1.1'
+          }
+      })
+  });
+  var fluvial_medium = new ol.layer.Tile({
+      title: 'Fluvial - medium risk',
+      source: new ol.source.TileWMS({
+          url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+          params: {
+              'LAYERS': 'flood_data:fluvial_1',
+              'VERSION': '1.1.1'
+          }
+      })
+  });
+  var fluvial_low = new ol.layer.Tile({
+      title: 'Fluvial - low risk',
+      source: new ol.source.TileWMS({
+          url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
+          params: {
+              'LAYERS': 'flood_data:fluvial_0_1',
+              'VERSION': '1.1.1'
+          }
+      })
+    });
   var map = new ol.Map({
     controls:ol.control.defaults({ attribution: false}),
     layers: [
@@ -183,19 +183,21 @@ $(document).ready(function()
           }),
         ]
       }),
-     flood_polygons
-      // overlay_group
+      fluvial_high,
+      fluvial_medium,
+      fluvial_low
     ],
     target: 'map',
     view: new ol.View({
-      center: ol.proj.transform([-8.62635, 52.66751], 'EPSG:4326', 'EPSG:3857'), // -8.2439, 53.4129
-      zoom: 8
+      center: ol.proj.transform([-8.6305, 52.6680], 'EPSG:4326', 'EPSG:3857'), // [-8.62635, 52.66751]
+      zoom: 14
     })
   });
-
+  map.addControl(new ol.control.ScaleLine());
+/*
   // Creating instance for the Layer swither and adding it to the map for controls.
   var layer_switcher = new ol.control.LayerSwitcher();
-  // map.addControl(layer_switcher);
+  map.addControl(layer_switcher);
 
   // Creating instance of popup and add it to the map.
   var popup = new ol.Overlay.Popup();
@@ -217,56 +219,50 @@ $(document).ready(function()
   });
 
   flood_polygons.setOpacity(0.5);
-  map.getView().on('change:resolution', function(evt)
-  {
-      var resolution = evt.target.get('resolution');
-      var units = map.getView().getProjection().getUnits();
-      var dpi = 25.4 / 0.28;
-      var mpu = ol.proj.METERS_PER_UNIT[units];
-      var scale = resolution * mpu * 39.37 * dpi;
-      if (scale >= 9500 && scale <= 950000) {
-        scale = Math.round(scale / 1000) + "K";
-      } else if (scale >= 950000) {
-        scale = Math.round(scale / 1000000) + "M";
-      } else {
-        scale = Math.round(scale);
-      }
-  });
+  */
 
   /*
   * Ability to add marker
   * Move the marker
   * get the new coordinates of the marker.
-  */
-  var last_coord = [];
-  var point_feature = new ol.Feature(new ol.geom.Point(map.getView().getCenter()));
-  var drag_interaction = new ol.interaction.Modify({
-    features: new ol.Collection([point_feature]),
-    style: null
-  });
 
-  var marker_layer = new ol.layer.Vector({
-    source: new ol.source.Vector({
-      features: [point_feature]
-    }),
-    style: new ol.style.Style({
-      image: new ol.style.Icon({
-        src: 'http://s22.postimg.org/nyt5oxv6p/location_marker.png'
-      })
-    })
-  });
+   var last_coord = [];
 
-  /*
   * @listner for creating marer layer
   * return new @cordinates on each point movment.
   */
+  console.log(map.getLayers().U.length);
+
   $('#marker-box').on('click', function()
   {
+    last_coord = map.getView().getCenter();
+    var point_feature = new ol.Feature(new ol.geom.Point(last_coord));
+    var drag_interaction = new ol.interaction.Modify({
+      features: new ol.Collection([point_feature]),
+      style: null
+    });
+    var marker_layer = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: [point_feature]
+      }),
+      style: new ol.style.Style({
+        image: new ol.style.Icon({
+          src: 'http://s22.postimg.org/nyt5oxv6p/location_marker.png'
+        })
+      })
+    });
+    if (map.getLayers().U.length >= 5)
+    {
+      map.getLayers().pop();
+      map.removeInteraction(drag_interaction);
+    }
     map.getLayers().push(marker_layer);
     map.addInteraction(drag_interaction);
+
     point_feature.on('change', function (e) {
       last_coord = this.getGeometry().getCoordinates();
       last_coord = ol.proj.transform(last_coord, 'EPSG:3857', 'EPSG:4326');
+      // console.log(last_coord);
     }, point_feature);
   });
 
@@ -289,16 +285,16 @@ $(document).ready(function()
       }
   });
   var old_val = $('.inner-content').html();
-  $('#map').on('mouseup', function (e) {
-    // alert('go');
-    // console.log('moved to: ' + last_coord);
+
+  $('#map').on('mouseup', function (e)
+  {
     lat = last_coord[0];
     lon = last_coord[1];
     $.ajax({
-      url: '/maps/getPointInfo/',
+      url: '/maps/getPointDistance/',
       type: 'POST',
       data: {
-        'coords': 'adsfasdf',
+        'coords': 'none',
         lat: lat,
         lon: lon,
         'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
@@ -313,17 +309,42 @@ $(document).ready(function()
       }
       else {
         keys = Object.keys(output);
-        console.log(output);
-        $('.inner-content').html(
-             '<strong>Record Id: </strong>'+output['id']+'<hr>'+
-             '<strong>Name: </strong>'+output['name']+'<hr>'+
-             '<strong>Flood Counts: </strong>'+output['flood_record']+'<hr>'+
-             '<strong>End Date: </strong>'+output['end_date']+'<hr>'
-        );
+
+        var new_text =  "<div id='info-region'>"+
+                          "<div id='inner-data'>"+
+                            "This area will contain some data"+
+                          "</div>"+
+                        "</div>"+
+                        "<div id='distance-blocks'>"+
+                          "<div id='danger-dis'><p>High Risk Area</p><p>"+cleanValue(output['danger'])+" away</p></div>"+
+                          "<div id='medium-dis'><p>High Risk Area</p><p>"+output['medium']+"m away</p></div>"+
+                          "<div id='low-dis'><p>High Risk Area</p><p>"+output['low']+"m away</p></div>"+
+                        "</div>";
+
+        $('.inner-content').html(new_text);
+        // $('.inner-content').html(
+        //      '<strong>Record Id: </strong>'+output['id']+'<hr>'+
+        //      '<strong>Name: </strong>'+output['name']+'<hr>'+
+        //      '<strong>Flood Counts: </strong>'+output['flood_record']+'<hr>'+
+        //      '<strong>End Date: </strong>'+output['end_date']+'<hr>'
+        // );
       }
     });
   });
 
+  function cleanValue(val)
+  {
+    console.log(val);
+    parts = val.split('.');
+    if (parts[0].length > 3) {
+      new_val = parseInt(parts[0])/1000;
+      return new_val.toString()+" Km"
+    }
+    else
+    {
+      return parts[0]+" m";
+    }
+  }
   // map.on('singleclick', function(evt)
   // {
   //     var source = flood_points.getSource();
