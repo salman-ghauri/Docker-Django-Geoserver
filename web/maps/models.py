@@ -28,3 +28,21 @@ class FloodPolys(models.Model):
 	flood_reco = models.IntegerField(blank=True, null=True)
 	geom = models.TextField(blank=True, null=True)  # This field type is a guess.
 
+class Fluvial01(models.Model):
+    gid = models.AutoField(primary_key=True)
+    id = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    percent = models.FloatField(blank=True, null=True)
+    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
+
+
+class Fluvial1(models.Model):
+    gid = models.AutoField(primary_key=True)
+    id = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    percent = models.FloatField(blank=True, null=True)
+    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
+
+class Fluvial10(models.Model):
+    gid = models.AutoField(primary_key=True)
+    id = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    percent = models.FloatField(blank=True, null=True)
+    geom = models.TextField(blank=True, null=True)  # This field type is a guess.

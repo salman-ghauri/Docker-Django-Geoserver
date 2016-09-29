@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View, TemplateView
-from maps.models import FloodPolys
+from maps.models import FloodPolys, Fluvial01, Fluvial1, Fluvial10, Choice
 from datetime import date
 from time import mktime
 
@@ -89,11 +89,11 @@ def check_status(request):
     medium = []
     low = []
 
-    query_danger = "SELECT gid, ST_Distance_Spheroid(ST_Transform(geom, 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_10 ORDER BY dis ASC;" %(lat, lon)
-    query_medium = "SELECT gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_1 ORDER BY dis ASC;" %(lat, lon)
-    query_low = "SELECT gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_0_1 ORDER BY dis ASC;" %(lat, lon)
+    query_danger = "SELECT id, gid, ST_Distance_Spheroid(ST_Transform(geom, 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_10 ORDER BY dis ASC;" %(lat, lon)
+    query_medium = "SELECT id, gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_1 ORDER BY dis ASC;" %(lat, lon)
+    query_low = "SELECT id ,gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_0_1 ORDER BY dis ASC;" %(lat, lon)
 
-    for dngr, med, lw in zip(FloodPolys.objects.raw(query_danger), FloodPolys.objects.raw(query_medium), FloodPolys.objects.raw(query_low)):
+    for dngr, med, lw in zip(Choice.objects.raw(query_danger), Choice.objects.raw(query_medium), Choice.objects.raw(query_low)):
         if dngr.gid:
             danger.append(dngr.dis)
         if med.gid:
