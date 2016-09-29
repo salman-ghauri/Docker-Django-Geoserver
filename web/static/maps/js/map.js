@@ -225,13 +225,13 @@ $(document).ready(function()
   * Ability to add marker
   * Move the marker
   * get the new coordinates of the marker.
-
-   var last_coord = [];
+  * var last_coord = [];
 
   * @listner for creating marer layer
   * return new @cordinates on each point movment.
   */
-  console.log(map.getLayers().U.length);
+
+  // console.log(map.getLayers().U.length);
 
   $('#marker-box').on('click', function()
   {
@@ -262,7 +262,6 @@ $(document).ready(function()
     point_feature.on('change', function (e) {
       last_coord = this.getGeometry().getCoordinates();
       last_coord = ol.proj.transform(last_coord, 'EPSG:3857', 'EPSG:4326');
-      // console.log(last_coord);
     }, point_feature);
   });
 
@@ -299,6 +298,7 @@ $(document).ready(function()
     .then(function (res) {
       console.log(res.display_name);
       $('#inner-data').html('Location name: ' + res.display_name);
+      // console.log($('#check-1').attr('class').split(" "));
       // if (checkClass())
       // {
 
@@ -307,7 +307,7 @@ $(document).ready(function()
       // {
 
       // }
-      $('.outer-info').show(200);
+      // $('.outer-info').show(200);
       // $('#check-1').toggleClass('glyphicon glyphicon-chevron-right glyphicon glyphicon-chevron-left');
     });
     $.ajax({
