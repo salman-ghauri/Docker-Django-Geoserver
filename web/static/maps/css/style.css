@@ -291,5 +291,8 @@ body {
   padding: 10px;
   margin-bottom: 10px;
 }
-
+.info_icon_2 {
+  float: right;
+  margin-top: -35px;
+}
 

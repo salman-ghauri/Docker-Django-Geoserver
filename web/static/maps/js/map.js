@@ -290,6 +290,26 @@ $(document).ready(function()
   {
     lat = last_coord[0];
     lon = last_coord[1];
+    var current_zoom = map.getView().getZoom();
+    var url = 'http://nominatim.openstreetmap.org/reverse?format=json&lat='+lon+'&lon='+lat+'&zoom='+current_zoom+'&addressdetails=1';
+    $.ajax({
+      type: 'GET',
+      url: url,
+    })
+    .then(function (res) {
+      console.log(res.display_name);
+      $('#inner-data').html('Location name: ' + res.display_name);
+      // if (checkClass())
+      // {
+
+      // }
+      // else
+      // {
+
+      // }
+      $('.outer-info').show(200);
+      // $('#check-1').toggleClass('glyphicon glyphicon-chevron-right glyphicon glyphicon-chevron-left');
+    });
     $.ajax({
       url: '/maps/getPointDistance/',
       type: 'POST',
@@ -316,82 +336,27 @@ $(document).ready(function()
                           "</div>"+
                         "</div>"+
                         "<div id='distance-blocks'>"+
-                          "<div id='danger-dis'><p>High Risk Area</p><p>"+cleanValue(output['danger'])+" away</p></div>"+
-                          "<div id='medium-dis'><p>High Risk Area</p><p>"+output['medium']+"m away</p></div>"+
-                          "<div id='low-dis'><p>High Risk Area</p><p>"+output['low']+"m away</p></div>"+
+                          "<div id='danger-dis'><p>High Risk Area</p><p>"+cleanValue(output['danger'])+" away</p><span class='info_icon_2'><img src='/static/img/info_2.png'/></span></div>"+
+                          "<div id='medium-dis'><p>Medium Risk Area </p><p>"+cleanValue(output['medium'])+" away</p><span class='info_icon_2'><img src='/static/img/info_2.png'/></span></div>"+
+                          "<div id='low-dis'><p>Low Risk Area </p><p>"+cleanValue(output['low'])+" away</p><span class='info_icon_2'><img src='/static/img/info_2.png'/></span></div>"+
                         "</div>";
 
         $('.inner-content').html(new_text);
-        // $('.inner-content').html(
-        //      '<strong>Record Id: </strong>'+output['id']+'<hr>'+
-        //      '<strong>Name: </strong>'+output['name']+'<hr>'+
-        //      '<strong>Flood Counts: </strong>'+output['flood_record']+'<hr>'+
-        //      '<strong>End Date: </strong>'+output['end_date']+'<hr>'
-        // );
       }
     });
   });
 
   function cleanValue(val)
   {
-    console.log(val);
-    parts = val.split('.');
-    if (parts[0].length > 3) {
-      new_val = parseInt(parts[0])/1000;
-      return new_val.toString()+" Km"
+    val = Math.floor(val).toString();
+    if (val.length > 3)
+    {
+      return Math.ceil(parseFloat(val)/1000).toString() + ' Km';
     }
     else
     {
-      return parts[0]+" m";
+      return val+' m';
     }
   }
-  // map.on('singleclick', function(evt)
-  // {
-  //     var source = flood_points.getSource();
-  //     getFeatureInfo(evt, source);
-  // });
-  var i = 1;
 
-  function getFeatureInfo(evt, source)
-  {
-      var view = map.getView();
-      var viewResolution = view.getResolution();
-      var url = source.getGetFeatureInfoUrl(
-          evt.coordinate, viewResolution, view.getProjection(),
-          {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50}
-      );
-
-      console.log(url);
-      if (url) {
-          $.ajax({
-              url: '/maps/getFeatureInfo/',
-              type: 'POST',
-              dataType: 'json',
-              data: {'url': url, 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()}
-          })
-          .then(function (res) {
-
-              if (res.features.length)
-              {
-                  var point_info = res.features[0];
-                  var point_info_properties = point_info.properties;
-                  var data = "<div><p><strong>Region id: </strong> "+point_info.id+"</p><p><strong>Name: </strong> "+point_info_properties.name+"</p><p><strong>Flood records: </strong> "+point_info_properties.flood_reco+"</p><p><strong>End date: </strong> "+point_info_properties.end_date+"</p></div>";
-                  popup.show(evt.coordinate, data);
-              }
-              else
-              {
-                  if (i < 2)
-                  {
-                      getFeatureInfo(evt, flood_polygons.getSource());
-                      i = i+1;
-                  }
-              }
-              console.log(res);
-          })
-          .catch(function(err) {
-              console.log(err);
-          });
-      }
-      i = 1;
-  }
 });
