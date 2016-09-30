@@ -344,8 +344,6 @@ $(document).ready(function()
   function cleanValue(val)
   {
     var round = Math.round(val).toString();
-    console.log(val);
-    console.log(round.length);
     if (round.length > 3)
     {
       return (Number(round)/1000).toFixed(2).toString() + ' Km';
