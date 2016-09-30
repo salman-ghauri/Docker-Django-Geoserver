@@ -29,18 +29,43 @@ def calculate_distance(request):
         danger = []
         medium = []
         low = []
+        inside_danger = False
+        inside_med = False
+        inside_low = False
 
-        query_danger = "SELECT gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_10 ORDER BY dis ASC;" %(lat, lon)
-        query_medium = "SELECT gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_1 ORDER BY dis ASC;" %(lat, lon)
-        query_low = "SELECT gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_0_1 ORDER BY dis ASC;" %(lat, lon)
+        query_danger = "SELECT id, gid, ST_Distance_Spheroid(ST_Transform(geom, 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_10 ORDER BY dis ASC;" %(lat, lon)
+        query_medium = "SELECT id, gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_1 ORDER BY dis ASC;" %(lat, lon)
+        query_low = "SELECT id ,gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_0_1 ORDER BY dis ASC;" %(lat, lon)
 
-        for dngr, med, lw in zip(FloodPolys.objects.raw(query_danger), FloodPolys.objects.raw(query_medium), FloodPolys.objects.raw(query_low)):
+        for dngr, med, lw in zip(Fluvial10.objects.raw(query_danger), Fluvial1.objects.raw(query_medium), Fluvial01.objects.raw(query_low)):
+
             if dngr.gid:
+                contains_query = "SELECT gid FROM fluvial_10 where ST_Contains(ST_Transform(geom, 4326), ST_GeomFromText('POINT(%f %f)', 4326));" %(lat, lon)
+                for check in Fluvial10.objects.raw(contains_query):
+                    if check.gid:
+                        inside_danger = True
                 danger.append(dngr.dis)
+
             if med.gid:
+                contains_query = "SELECT gid FROM fluvial_1 where ST_Contains(ST_Transform(geom, 4326), ST_GeomFromText('POINT(%f %f)', 4326));" %(lat, lon)
+                for check in Fluvial10.objects.raw(contains_query):
+                    if check.gid:
+                        inside_med = True
                 medium.append(med.dis)
+
             if lw.gid:
+                contains_query = "SELECT gid FROM fluvial_0_1 where ST_Contains(ST_Transform(geom, 4326), ST_GeomFromText('POINT(%f %f)', 4326));" %(lat, lon)
+                for check in Fluvial10.objects.raw(contains_query):
+                    if check.gid:
+                        inside_low = True
                 low.append(lw.dis)
+
+        if inside_danger:
+            danger[0] = 0
+        if inside_med:
+            medium[0] = 0
+        if inside_low:
+            low[0] = 0
         data.update({'danger':danger[0], 'medium': medium[0], 'low':low[0]})
         if not data:
             print 'empty'
@@ -81,25 +106,51 @@ def check_status(request):
     #     print 'empty'
     # else:
     #     print json.dumps(data, default=json_serial)
-
-    lat = -8.631606101989746
-    lon = 52.67340916376591
+    # -8.626499176025389 52.66802877544953
+    # -8.61774444580078 52.67224466189552
+    lat = -8.61774444580078
+    lon = 52.67224466189552
     data = {}
     danger = []
     medium = []
     low = []
+    inside_danger = False
+    inside_med = False
+    inside_low = False
 
     query_danger = "SELECT id, gid, ST_Distance_Spheroid(ST_Transform(geom, 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_10 ORDER BY dis ASC;" %(lat, lon)
     query_medium = "SELECT id, gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_1 ORDER BY dis ASC;" %(lat, lon)
     query_low = "SELECT id ,gid, ST_Distance_Spheroid(ST_Transform(ST_Boundary(geom), 4326), ST_GeomFromText('POINT(%f %f)', 4326),'SPHEROID[\"WGS 84\", 6378137, 298.257223563]') AS dis FROM fluvial_0_1 ORDER BY dis ASC;" %(lat, lon)
 
-    for dngr, med, lw in zip(Choice.objects.raw(query_danger), Choice.objects.raw(query_medium), Choice.objects.raw(query_low)):
+    for dngr, med, lw in zip(Fluvial10.objects.raw(query_danger), Fluvial1.objects.raw(query_medium), Fluvial01.objects.raw(query_low)):
+
         if dngr.gid:
+            contains_query = "SELECT gid FROM fluvial_10 where ST_Contains(ST_Transform(geom, 4326), ST_GeomFromText('POINT(%f %f)', 4326));" %(lat, lon)
+            for check in Fluvial10.objects.raw(contains_query):
+                if check.gid:
+                    inside_danger = True
             danger.append(dngr.dis)
+
         if med.gid:
+            contains_query = "SELECT gid FROM fluvial_1 where ST_Contains(ST_Transform(geom, 4326), ST_GeomFromText('POINT(%f %f)', 4326));" %(lat, lon)
+            for check in Fluvial10.objects.raw(contains_query):
+                if check.gid:
+                    inside_med = True
             medium.append(med.dis)
+
         if lw.gid:
+            contains_query = "SELECT gid FROM fluvial_0_1 where ST_Contains(ST_Transform(geom, 4326), ST_GeomFromText('POINT(%f %f)', 4326));" %(lat, lon)
+            for check in Fluvial10.objects.raw(contains_query):
+                if check.gid:
+                    inside_low = True
             low.append(lw.dis)
+
+    if inside_danger:
+        danger[0] = 0
+    if inside_med:
+        medium[0] = 0
+    if inside_low:
+        low[0] = 0
     data.update({'danger':danger[0], 'medium': medium[0], 'low':low[0]})
     if not data:
         return HttpResponse('empty')

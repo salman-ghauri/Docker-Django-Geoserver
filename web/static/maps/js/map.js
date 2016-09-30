@@ -290,6 +290,7 @@ $(document).ready(function()
   {
     lat = last_coord[0];
     lon = last_coord[1];
+    console.log(lat, lon);
     var current_zoom = map.getView().getZoom();
     var url = 'http://nominatim.openstreetmap.org/reverse?format=json&lat='+lon+'&lon='+lat+'&zoom='+current_zoom+'&addressdetails=1';
     $.ajax({
@@ -342,14 +343,20 @@ $(document).ready(function()
 
   function cleanValue(val)
   {
-    val = Math.floor(val).toString();
-    if (val.length > 3)
+    var round = Math.round(val).toString();
+    console.log(val);
+    console.log(round.length);
+    if (round.length > 3)
     {
-      return Math.ceil(parseFloat(val)/1000).toString() + ' Km';
+      return (Number(round)/1000).toFixed(2).toString() + ' Km';
+    }
+    else if (val == 0)
+    {
+      return val + ' m';
     }
     else
     {
-      return val+' m';
+      return val.toFixed(2)+' m';
     }
   }
 
