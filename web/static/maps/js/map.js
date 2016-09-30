@@ -10,7 +10,7 @@ $(document).ready(function()
     backdrop: 'static',
     keyboard: false
   });
-
+  $('.container-full').removeClass('hide');
   $('#accept-terms').on('click', function (eap)
   {
     $('#terms-modal').slideUp(1000);
@@ -225,39 +225,40 @@ $(document).ready(function()
   * Ability to add marker
   * Move the marker
   * get the new coordinates of the marker.
-  * var last_coord = [];
 
   * @listner for creating marer layer
   * return new @cordinates on each point movment.
   */
 
-  // console.log(map.getLayers().U.length);
+  var mark_source = new ol.source.Vector();
+  var marker_layer = new ol.layer.Vector({
+    source: mark_source,
+    style: new ol.style.Style({
+      image: new ol.style.Icon({
+        src: 'http://s22.postimg.org/nyt5oxv6p/location_marker.png'
+      })
+    })
+  });
+  var new_feature = new ol.Collection([]);
+  var drag_interaction = new ol.interaction.Modify({
+      features: new_feature,
+      style: null
+  });
+  map.addLayer(marker_layer);
+  map.addInteraction(drag_interaction);
+  var last_coord = [];
 
   $('#marker-box').on('click', function()
   {
     last_coord = map.getView().getCenter();
     var point_feature = new ol.Feature(new ol.geom.Point(last_coord));
-    var drag_interaction = new ol.interaction.Modify({
-      features: new ol.Collection([point_feature]),
-      style: null
-    });
-    var marker_layer = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        features: [point_feature]
-      }),
-      style: new ol.style.Style({
-        image: new ol.style.Icon({
-          src: 'http://s22.postimg.org/nyt5oxv6p/location_marker.png'
-        })
-      })
-    });
-    if (map.getLayers().U.length >= 5)
+    if (mark_source.getFeatures().length > 0)
     {
-      map.getLayers().pop();
-      map.removeInteraction(drag_interaction);
+      mark_source.clear();
+      new_feature.remove(point_feature);
     }
-    map.getLayers().push(marker_layer);
-    map.addInteraction(drag_interaction);
+    new_feature.extend([point_feature]);
+    mark_source.addFeature(point_feature);
 
     point_feature.on('change', function (e) {
       last_coord = this.getGeometry().getCoordinates();
@@ -285,7 +286,7 @@ $(document).ready(function()
   });
   var old_val = $('.inner-content').html();
 
-  $('#map').on('mouseup', function (e)
+  drag_interaction.on('modifyend', function (e)
   {
     lat = last_coord[0];
     lon = last_coord[1];
@@ -296,19 +297,13 @@ $(document).ready(function()
       url: url,
     })
     .then(function (res) {
-      console.log(res.display_name);
       $('#inner-data').html('Location name: ' + res.display_name);
-      // console.log($('#check-1').attr('class').split(" "));
-      // if (checkClass())
-      // {
-
-      // }
-      // else
-      // {
-
-      // }
-      // $('.outer-info').show(200);
-      // $('#check-1').toggleClass('glyphicon glyphicon-chevron-right glyphicon glyphicon-chevron-left');
+      $('.outer-info').show(200);
+      $('#check-1').removeClass('glyphicon-chevron-right');
+      if (!$('#check-1').hasClass('glyphicon-chevron-left'))
+      {
+        $('#check-1').addClass('glyphicon-chevron-left');
+      }
     });
     $.ajax({
       url: '/maps/getPointDistance/',
@@ -327,9 +322,9 @@ $(document).ready(function()
         console.log('nothing found');
         $('.inner-content').html(old_val);
       }
-      else {
+      else
+      {
         keys = Object.keys(output);
-
         var new_text =  "<div id='info-region'>"+
                           "<div id='inner-data'>"+
                             "This area will contain some data"+
@@ -340,7 +335,6 @@ $(document).ready(function()
                           "<div id='medium-dis'><p>Medium Risk Area </p><p>"+cleanValue(output['medium'])+" away</p><span class='info_icon_2'><img src='/static/img/info_2.png'/></span></div>"+
                           "<div id='low-dis'><p>Low Risk Area </p><p>"+cleanValue(output['low'])+" away</p><span class='info_icon_2'><img src='/static/img/info_2.png'/></span></div>"+
                         "</div>";
-
         $('.inner-content').html(new_text);
       }
     });

@@ -295,4 +295,9 @@ body {
   float: right;
   margin-top: -35px;
 }
-
+.info_icon_2 img {
+  height: 10px;
+}
+.hide {
+  display: none !important;
+}
