@@ -5,15 +5,20 @@ html, body {
   font-family: sans-serif;
   font-size: small;
 }
-
+.container-full {
+  height: 100vh;
+}
+#map-div {
+  /*height: 85%;*/
+}
 .map {
-  height: 86vh;
+  height: 85vh;
   width: 100%;
   position: relative;
 }
 #footer {
   background: #f3f1ed;
-  height: 39px;
+  height: 7vh;
   margin-top: 4px;
   -webkit-box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.75);
   -moz-box-shadow:    0px -4px 3px rgba(50, 50, 50, 0.75);
@@ -46,6 +51,7 @@ body {
 }
 .navbar-sm {
     color: white;
+    height: 7vh;
     background-image: linear-gradient(#52981b, #66a931, #52981b);
 }
 .navbar-sm a {
@@ -143,15 +149,20 @@ body {
 .under {
   width: 94%;
   float: left;
+  height: inherit;
 }
 .above {
   background: black;
-  height: 100vh;
+  height: inherit;
   width: 6%;
   float: left;
+  line-height: 100vh;
+  text-align: center;
 }
 .options {
-  padding: 15em 1em;
+  display: inline-block;
+  line-height: normal;
+  vertical-align: middle;
 }
 .floating-panel {
   position: absolute;
