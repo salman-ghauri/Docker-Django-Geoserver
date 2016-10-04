@@ -342,7 +342,8 @@ $(document).ready(function()
           }
           else
           {
-            $('.search-box').append('<span class="error">Unable to find location</span>');
+            if (!$('.error')[0])
+              $('.search-box').append('<br><span class="error">Unable to find location</span>');
           }
         });
       }
@@ -350,7 +351,7 @@ $(document).ready(function()
       {
         if (!$('.error')[0])
         {
-          $('.search-box').append('<span class="error">* Enter a location.</span>');
+          $('.search-box').append('<br><span class="error">* Enter a location.</span>');
         }
       }
   }
