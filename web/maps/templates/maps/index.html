@@ -5,38 +5,40 @@
     {% csrf_token %}
     <div class="floating-panel hide">
         <div class="detail">
-            <p>
+            <p id="floatin-map">
+                <img src="/static/img/maps.png">
                 <a href="javascript:;" id="floating-swipe">
-                    <span id="floatin-head-1">Flood Check Ireland Maps
-                        <span class="glyphicon glyphicon-chevron-right" id="check-1"></span>
-                    </span>
+                    <span class="glyphicon glyphicon-chevron-right" id="check-1"></span>
                 </a>
             </p>
-            <p id="floatin-map"><img src="/static/img/maps.png"></p>
             <p id="floatin-head-2"><span>RISK MAPS</span></p>
-            <p>
-                The blue colors on the map represents different levels of flood risks for the area. The maps are created using computer modeling and cover allparts of Ireland.
-            </p>
+            <p>The  blue  colors  on  the  map represent the various different levels of flood risk for that area.</p>
         </div>
         <div class="outer-info" id="outer-info">
             <div class="inner-content">
-                <div>
-                    <div class="danger">High Risk</div>
+                <div class="inner-info-divs">
+                    <div class="danger text-center">High Risk</div>
                     <p class="text">
                         On average flood will occur once every 30 years.
                         <img src="/static/img/info.png">
                     </p>
                 </div>
-                <div>
-                    <div class="medium">Medium Risk</div>
+                <div class="inner-info-divs">
+                    <div class="medium text-center">Medium Risk</div>
                     <p class="text">
                         On average flood will occur once every 30 to 100 years.
                         <img src="/static/img/info.png">
-
                     </p>
                 </div>
-                <div>
-                    <div class="low">Low Risk</div>
+                <div class="inner-info-divs">
+                    <div class="low text-center">Low Risk</div>
+                    <p class="text">
+                        On average flood will occur once every 100 to 1000 years.
+                        <img src="/static/img/info.png">
+                    </p>
+                </div>
+                <div class="inner-info-divs">
+                    <div class="very-low text-center">Very Low Risk</div>
                     <p class="text">
                         On average flood will occur once every 100 to 1000 years.
                         <img src="/static/img/info.png">
@@ -46,3 +48,30 @@
         </div>
     </div>
 {% endblock content %}
+<!--
+                <div class="inner-info-divs">
+                    <div class="danger text-center">High Risk</div>
+                    <p class="text-2 text-center">
+                        225 m away
+                    </p>
+                </div>
+                <div class="inner-info-divs">
+                    <div class="medium text-center">Medium Risk</div>
+                    <p class="text-2 text-center">
+                        225 m away
+                    </p>
+                </div>
+                <div class="inner-info-divs">
+                    <div class="low text-center">Low Risk</div>
+                    <p class="text-2 text-center">
+                        225 m away
+                        <img src="/static/img/location_marker.png" class="distance-marker">
+                    </p>
+                </div>
+                <div class="inner-info-divs">
+                    <div class="very-low text-center">Very Low Risk</div>
+                    <p class="text-2 text-center">
+                        225 m away
+                    </p>
+                </div>
+                -->

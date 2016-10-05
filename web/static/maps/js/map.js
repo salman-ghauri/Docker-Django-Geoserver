@@ -1,3 +1,4 @@
+
 $(document).ready(function()
 {
   var geoserver_link = window.location.hostname;
@@ -5,7 +6,10 @@ $(document).ready(function()
   * @Handeling the modals
   * the @terms and #location
   */
-  $('.outer-info').hide();
+  $('#location-modal').on('shown.bs.modal', function (e) {
+    document.getElementById("location-finder").focus();
+  });
+  $('#outer-info').hide();
   $('#terms-modal').modal({
     show: true,
     backdrop: 'static',
@@ -15,9 +19,11 @@ $(document).ready(function()
   $('#accept-terms').on('click', function (eap)
   {
     $('#terms-modal').slideUp(1000);
-    $('#terms-modal').modal('hide');
-    $('#location-modal').modal('show');
-    $('.floating-panel').removeClass('hide');
+    setTimeout(function () {
+      $('#terms-modal').modal('hide');
+      $('#location-modal').modal('show');
+      $('.floating-panel').removeClass('hide');
+    }, 1100)
   });
 
   $('#search-location').on('click', function (e)
@@ -29,7 +35,7 @@ $(document).ready(function()
   $('#floating-swipe').on('click', function (e)
   {
     $('.buttons').toggle(200);
-    $('.outer-info').toggle(200);
+    $('#outer-info').toggle(200);
     $('#check-1').toggleClass('glyphicon glyphicon-chevron-right glyphicon glyphicon-chevron-left');
   });
   /*
@@ -134,7 +140,7 @@ $(document).ready(function()
 
   $('#location-finder').on('keyup', function (e) {
     if (e.keyCode == 13)
-      {goToAddress(e);}
+      goToAddress(e);
   });
   $('#do-search').on('click', function (e)
   {
@@ -305,15 +311,15 @@ $(document).ready(function()
     var round = Math.round(val).toString();
     if (round.length > 3)
     {
-      return (Number(round)/1000).toFixed(2).toString() + ' Km';
+      return (Number(round)/1000).toFixed(2).toString() + ' Km away';
     }
     else if (val == 0)
     {
-      return val + ' m';
+      return '<strong>'+val+' m away</strong>'+'<img src="/static/img/location_marker.png" class="distance-marker">';
     }
     else
     {
-      return val.toFixed(2)+' m';
+      return val.toFixed(2)+' m away';
     }
   }
 
@@ -323,7 +329,7 @@ $(document).ready(function()
     if ($('#location-finder').val().length !== 0)
     {
       var address = $.trim($('#location-finder').val()).split(' ').join('+');
-      var url = geocode+'?address='+address+'&key='+api_key;
+      var url = geocode+'?address='+address+', Ireland'+'&key='+api_key;
         $.ajax({
           url: url,
           type: 'GET',
@@ -336,6 +342,7 @@ $(document).ready(function()
             var loc_coord = ol.proj.transform([lat_lon.lng, lat_lon.lat], 'EPSG:4326', 'EPSG:3857');
             map.getView().setCenter(loc_coord);
             drawMarker(loc_coord);
+            map.getView().setZoom(11);
             showCalDistance();
             $('#location-modal').modal('hide');
             $('.error').remove();
@@ -346,13 +353,6 @@ $(document).ready(function()
               $('.search-box').append('<br><span class="error">Unable to find location</span>');
           }
         });
-      }
-      else
-      {
-        if (!$('.error')[0])
-        {
-          $('.search-box').append('<br><span class="error">* Enter a location.</span>');
-        }
       }
   }
 
@@ -382,7 +382,7 @@ $(document).ready(function()
     .then(function (res)
     {
       $('#inner-data').html('Location name: ' + res.display_name);
-      $('.outer-info').show(200);
+      $('#outer-info').show(200);
       $('#check-1').removeClass('glyphicon-chevron-right');
       if (!$('#check-1').hasClass('glyphicon-chevron-left'))
       {
@@ -410,17 +410,36 @@ $(document).ready(function()
       }
       else
       {
-        var new_text =  "<div id='info-region'>"+
-                          "<div id='inner-data'>"+
-                            "This area will contain some data"+
-                          "</div>"+
-                        "</div>"+
-                        "<div id='distance-blocks'>"+
-                          "<div id='danger-dis'><p>High Risk Area</p><p>"+cleanValue(output['danger'])+" away</p><span class='info_icon_2'><img src='/static/img/info_2.png'/></span></div>"+
-                          "<div id='medium-dis'><p>Medium Risk Area </p><p>"+cleanValue(output['medium'])+" away</p><span class='info_icon_2'><img src='/static/img/info_2.png'/></span></div>"+
-                          "<div id='low-dis'><p>Low Risk Area </p><p>"+cleanValue(output['low'])+" away</p><span class='info_icon_2'><img src='/static/img/info_2.png'/></span></div>"+
-                        "</div>";
-        $('.inner-content').html(new_text);
+        var new_text_2 = '<div class="inner-info-divs">'+
+                            '<div class="danger text-center">High Risk</div>'+
+                            '<p class="text-2 text-center">'+
+                                cleanValue(output['danger'])+
+                            '</p>'+
+                          '</div>'+
+                          '<div class="inner-info-divs">'+
+                              '<div class="medium text-center">Medium Risk</div>'+
+                              '<p class="text-2 text-center">'+
+                                  cleanValue(output['medium'])+
+                              '</p>'+
+                          '</div>'+
+                          '<div class="inner-info-divs">'+
+                              '<div class="low text-center">Low Risk</div>'+
+                              '<p class="text-2 text-center">'+
+                                  cleanValue(output['low'])+
+                              '</p>'+
+                          '</div>'+
+                          '<div class="inner-info-divs">'+
+                              '<div class="very-low text-center">Very Low Risk</div>'+
+                              '<p class="text-2 text-center">'+
+                                  '225 m away'+
+                              '</p>'+
+                          '</div>';
+        $('.inner-content').html(new_text_2);
+        if (!$('#outer-info').hasClass('outer-info-2'))
+        {
+          $('#outer-info').removeClass().addClass('outer-info-2');
+          console.log($('#outer-info').attr('class'));
+        }
       }
     });
   }

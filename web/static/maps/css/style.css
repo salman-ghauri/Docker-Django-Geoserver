@@ -2,31 +2,44 @@
 html, body {
   padding: 0 !important;
   margin: 0;
-  font-family: sans-serif;
-  font-size: small;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 .container-full {
-  /*height: 100vh;*/
+  height: inherit;
+  width: 100%;
+  color: #fff;
 }
 #map-div {
   padding-bottom: 0.3%;
+  height: 88%;
 }
 .map {
-  height: 85vh;
+  height: 100%;
   width: 100%;
   position: relative;
 }
 .navbar-sm {
     color: white;
-    height: 7vh;
+    height: 30px;
     background-image: linear-gradient(#52981b, #66a931, #52981b);
 }
 #footer {
-  background: #f3f1ed;
-  height: 7vh;
-  -webkit-box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.75);
+  background: #ffffff;
+  height: 53px;
   -moz-box-shadow:    0px -4px 3px rgba(50, 50, 50, 0.75);
   box-shadow:         0px -4px 3px rgba(50, 50, 50, 0.75);
+}
+.navbar-right {
+  height: 30px;
+  margin-top: -10px;
+}
+.nav-bar-menu {
+  height: inherit;
+}
+.nav-bar-menu a {
+  height: 40px;
 }
 .ol-popup {
     width: 350px;
@@ -37,24 +50,12 @@ html, body {
 }
 
 .navbar-sm .navbar-primary .navbar {
-  min-height:40px;
-  height: 40px;
+  min-height:30px;
+  height: 30px;
 }
-.navbar-sm .navbar-primary .navbar .navbar-brand{
-  padding: 0px 12px;
-  font-size: 16px;
-  line-height: 40px;
-}
-.navbar-sm .navbar-primary .navbar .navbar-nav > li > a {
-  padding-top: 0px;
-  padding-bottom: 0px;
-  line-height: 40px;
-}
-
 .navbar-sm a {
   color: white;
 }
-
 .navbar-sm ul a:hover {
   color: black;
 }
@@ -83,8 +84,12 @@ html, body {
   background-color: rgba(255, 255, 255, 0)   !important;
 }
 .social {
-  padding: 3px 12px;
+  padding: 4px 63px;
 }
+.social img {
+  height: 35px;
+}
+
 .modal-one {
     margin: 0;
     width: 100%;
@@ -100,14 +105,14 @@ html, body {
 #terms-modal .modal-content {
     border-radius: 0px;
     border: 2px solid #FFF;
-    height: 55vh;
+    height: 70vh;
 }
 #terms-modal .modal-header {
-  height: 20%;
+  height: 12%;
   padding: 1%;
 }
 #terms-modal .modal-body {
-  height: 72%;
+  height: 76%;
   overflow-y: auto;
 }
 #terms-modal .modal-footer {
@@ -118,12 +123,21 @@ html, body {
 }
 
 #accept-terms {
-  background: #333;
   color: #ddd;
   padding: 15px;
   border-radius: 46%;
   bottom: 0px;
   border: 1px;
+  width: 170px;
+  height: 100px;
+  font-size: 26px;
+  color: white;
+  background: #3c3939;
+  outline: none !important;
+}
+#accept-terms:hover{
+  background: black;
+
 }
 #location-finder {
   width: 80%;
@@ -144,14 +158,14 @@ html, body {
   padding: 5px;
 }
 .under {
-  width: 94%;
+  width: 95%;
   float: left;
-  /*height: inherit;*/
+  height: inherit;
 }
 .above {
-  background: black;
-  height: 100vh;
-  width: 6%;
+  background: #242429;
+  height: 100%;
+  width: 5%;
   float: left;
   line-height: 100vh;
   text-align: center;
@@ -161,23 +175,36 @@ html, body {
   line-height: normal;
   vertical-align: middle;
 }
+.side-buttons {
+  width: 46px;
+  opacity: 0.5;
+  filter:alpha(opacity=50);
+}
+.side-buttons:hover {
+  /*background: white;*/
+  opacity: 1.0;
+  filter:alpha(opacity=150);
+}
 .floating-panel {
   position: absolute;
-  bottom: 10%;
+      bottom: 13%;
   left: 0%;
-  height: 200px;
+  height: 138px;
   box-shadow: 0px 4px 10px rgb(31, 30, 30);
 }
 .detail {
-  color: #dcdcdc;
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 1;
+  color: #fff;
   padding: 15px 15px 0 15px;
-  width: 26em;
   float: left;
-  background: black;
+  background: #242429;
   height: inherit;
+  line-height: 15px;
+  font-size: 10pt;
+  font-family: Roboto-Regular, Arial;
+  width: 228px;
+}
+#check-1 {
+  float: right;
 }
 #floatin-head-1 {
   font-size: 16px;
@@ -189,8 +216,8 @@ html, body {
 #floatin-map {
   text-align: center;
 }
-#marker-box {
-  padding-bottom: 20px;
+.options-divs {
+  padding-bottom: 10px;
 }
 .outer-info {
   background: white none repeat scroll 0 0;
@@ -199,51 +226,95 @@ html, body {
   overflow: auto;
   width: 38em;
 }
+.inner-info-divs {
+  height: 25%;
+  width: 100%
+}
 #floating-swipe, #floating-swipe:hover {
   color: #dcdcdc;
   text-decoration: none;
 }
 .danger {
   background: #0041ab;
-  padding: 5px;
+  padding: 9px;
   color: #ffffff;
-  font-size: 10px;
   font-weight: bolder;
-  width: 18%;
+  /*width: 22%;*/
+  width: 105px;
   float: left;
+  height: 100%;
+  font-size: 12px;
 }
 .medium {
   background: rgba(0, 112, 171, 0.86);
-  padding: 5px;
+  padding: 9px;
   color: #ffffff;
-  font-size: 10px;
   font-weight: bolder;
-  width: 18%;
+  /*width: 22%;*/
+  width: 105px;
   float: left;
+  height: 100%;
+  font-size: 12px;
 }
 .low {
   background: #768e94;
-  padding: 5px;
+  padding: 9px;
   color: #ffffff;
-  font-size: 10px;
   font-weight: bolder;
-  width: 18%;
+  /*width: 22%;*/
+  width: 105px;
   float: left;
+  height: 100%;
+  font-size: 12px;
 }
-
+.very-low {
+  background: #bbdce4;
+  padding: 9px;
+  color: #ffffff;
+  font-weight: bolder;
+  /*width: 22%;*/
+  width: 105px;
+  float: left;
+  height: 100%;
+  font-size: 12px;
+}
 .text {
   float: left;
   margin: 0;
   border-bottom: 1px solid #dcdcdc;
-  width: 82%;
-  padding: 2.5px;
+  width: 78%;
+  padding: 8.5px;
+  height: 100%;
+  color: black;
 }
-.text img {
+.text img, .text-2 img {
   float: right;
 }
 .inner-content {
-  padding: 1px;
+  /*padding: 1px;*/
   height: inherit;
+  line-height: 15px;
+  font-size: 10pt;
+  font-family: Roboto-Regular, Arial;
+}
+.outer-info-2 {
+  width: 25em;
+  background: white none repeat scroll 0 0;
+  float: left;
+  height: inherit;
+  overflow: auto;
+}
+.text-2 {
+  float: left;
+  margin: 0;
+  border-bottom: 1px solid #dcdcdc;
+  width: 67%;
+  padding: 8.5px;
+  height: 100%;
+  color: black;
+}
+.distance-marker {
+  width: 17px;
 }
 #info-region {
     float: left;
