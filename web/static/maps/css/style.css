@@ -4,7 +4,6 @@ html, body {
   margin: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 .container-full {
   height: inherit;
@@ -13,23 +12,27 @@ html, body {
 }
 #map-div {
   padding-bottom: 0.3%;
-  height: 88%;
+  height: 100%;
 }
 .map {
   height: 100%;
   width: 100%;
   position: relative;
 }
-.navbar-sm {
-    color: white;
-    height: 30px;
-    background-image: linear-gradient(#52981b, #66a931, #52981b);
-}
 #footer {
   background: #ffffff;
-  height: 53px;
+  height: 50px;
   -moz-box-shadow:    0px -4px 3px rgba(50, 50, 50, 0.75);
   box-shadow:         0px -4px 3px rgba(50, 50, 50, 0.75);
+  position: absolute;
+  width: 95% !important;
+  bottom: 0 !important;
+}
+.site-nav {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  background-image: linear-gradient(#52981b, #66a931, #52981b)
 }
 .navbar-right {
   height: 30px;
@@ -66,10 +69,10 @@ html, body {
   height: inherit;
 }
 .ol-zoom{
-    top: 86% !important;
-    left: 92% !important;
-    bottom: 3%;
-    right: 4% !important;
+    top: 77% !important;
+    left: 94% !important;
+    bottom: 23%;
+    right: 6% !important;
 }
 .ol-zoom-in, .ol-zoom-out {
     width: 28px !important;
