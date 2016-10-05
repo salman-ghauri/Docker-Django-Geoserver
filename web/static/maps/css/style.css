@@ -30,7 +30,7 @@ html, body {
 }
 .site-nav {
   position: absolute;
-  width: 100%;
+  width: 95%;
   top: 0;
   background-image: linear-gradient(#52981b, #66a931, #52981b)
 }
