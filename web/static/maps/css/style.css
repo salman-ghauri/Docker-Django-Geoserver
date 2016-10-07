@@ -4,6 +4,7 @@ html, body {
   margin: 0;
   width: 100%;
   height: 100%;
+  font-family: Roboto-Regular, Arial;
 }
 .container-full {
   height: inherit;
@@ -69,14 +70,14 @@ html, body {
   height: inherit;
 }
 .ol-zoom{
-    top: 77% !important;
+    top: 74% !important;
     left: 94% !important;
-    bottom: 23%;
+    bottom: 26%;
     right: 6% !important;
 }
 .ol-zoom-in, .ol-zoom-out {
-    width: 28px !important;
-    height: 30px !important;
+    width: 37px !important;
+    height: 40px !important;
     color: black !important;
     background-image: linear-gradient(#cccccc, #F5F5F5, #cccccc);
     border-radius: 0 !important;
@@ -143,16 +144,17 @@ html, body {
 
 }
 #location-finder {
-  width: 80%;
+  width: 86%;
   float: left;
   border-radius: 0px;
   background: #ececec;
   color: black;
 }
 #do-search {
-  margin-left: 15px;
+  margin-left: 2%;
   border-radius: 0px;
   background: #ececec;
+  width: 12%
 }
 .heading-two {
   padding: 5px;
@@ -218,6 +220,7 @@ html, body {
 }
 #floatin-map {
   text-align: center;
+  margin-bottom: 5px !important;
 }
 .options-divs {
   padding-bottom: 10px;
@@ -227,7 +230,7 @@ html, body {
   float: left;
   height: inherit;
   overflow: auto;
-  width: 38em;
+  width: 35.5em;
 }
 .inner-info-divs {
   height: 25%;
@@ -242,8 +245,7 @@ html, body {
   padding: 9px;
   color: #ffffff;
   font-weight: bolder;
-  /*width: 22%;*/
-  width: 105px;
+  width: 23%;
   float: left;
   height: 100%;
   font-size: 12px;
@@ -253,8 +255,7 @@ html, body {
   padding: 9px;
   color: #ffffff;
   font-weight: bolder;
-  /*width: 22%;*/
-  width: 105px;
+  width: 23%;
   float: left;
   height: 100%;
   font-size: 12px;
@@ -264,8 +265,7 @@ html, body {
   padding: 9px;
   color: #ffffff;
   font-weight: bolder;
-  /*width: 22%;*/
-  width: 105px;
+  width: 23%;
   float: left;
   height: 100%;
   font-size: 12px;
@@ -275,8 +275,7 @@ html, body {
   padding: 9px;
   color: #ffffff;
   font-weight: bolder;
-  /*width: 22%;*/
-  width: 105px;
+  width: 23%;
   float: left;
   height: 100%;
   font-size: 12px;
@@ -285,7 +284,7 @@ html, body {
   float: left;
   margin: 0;
   border-bottom: 1px solid #dcdcdc;
-  width: 78%;
+  width: 77%;
   padding: 8.5px;
   height: 100%;
   color: black;
@@ -294,7 +293,6 @@ html, body {
   float: right;
 }
 .inner-content {
-  /*padding: 1px;*/
   height: inherit;
   line-height: 15px;
   font-size: 10pt;
@@ -311,7 +309,7 @@ html, body {
   float: left;
   margin: 0;
   border-bottom: 1px solid #dcdcdc;
-  width: 67%;
+  width: 66%;
   padding: 8.5px;
   height: 100%;
   color: black;
@@ -388,3 +386,64 @@ html, body {
   font-size: 11px;
   font-weight: 500;
 }
+p#floatin-map>img {
+  height: 35px;
+  width: 35px;
+}
+.mini-buttons {
+  float: left;
+  height: 100%;
+  color: white;
+}
+.danger-short {
+  height: 25%;
+  margin: 0;
+  padding: 7px;
+  width: 27px;
+  background: #0041ab;
+  font-weight: bold;
+  font-family: serif;
+}
+.medium-short {
+  height: 25%;
+  margin: 0;
+  padding: 7px;
+  width: 27px;
+  background: rgba(0, 112, 171, 0.86);
+  font-weight: bold;
+  font-family: serif;
+}
+.low-short {
+  height: 25%;
+  margin: 0;
+  padding: 7px;
+  width: 27px;
+  background: #768e94;
+  font-weight: bold;
+  font-family: serif;
+}
+.vlow-short {
+  height: 25%;
+  margin: 0;
+  padding: 7px;
+  width: 27px;
+  background: #bbdce4;
+  font-weight: bold;
+  font-family: serif;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

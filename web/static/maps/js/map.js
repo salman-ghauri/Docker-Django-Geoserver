@@ -1,6 +1,7 @@
 
 $(document).ready(function()
 {
+
   var geoserver_link = window.location.hostname;
   /*
   * @Handeling the modals
@@ -9,7 +10,7 @@ $(document).ready(function()
   $('#location-modal').on('shown.bs.modal', function (e) {
     document.getElementById("location-finder").focus();
   });
-  $('#outer-info').hide();
+  $('.mini-buttons').hide();
   $('#terms-modal').modal({
     show: true,
     backdrop: 'static',
@@ -23,7 +24,7 @@ $(document).ready(function()
       $('#terms-modal').modal('hide');
       $('#location-modal').modal('show');
       $('.floating-panel').removeClass('hide');
-    }, 1100)
+    }, 900);
   });
 
   $('#search-location').on('click', function (e)
@@ -32,103 +33,27 @@ $(document).ready(function()
     $('#location-modal').modal('show');
   });
 
-  $('#floating-swipe').on('click', function (e)
+  $('#floating-swipe').on('click', function(e)
   {
-    $('.buttons').toggle(200);
-    $('#outer-info').toggle(200);
-    $('#check-1').toggleClass('glyphicon glyphicon-chevron-right glyphicon glyphicon-chevron-left');
+    console.log(e);
+    if ($('#check-1').hasClass('glyphicon-triangle-right'))
+    {
+      $('.mini-buttons').hide(800, 'linear');
+      setTimeout(function (e) {
+        $('#outer-info').toggle(800);
+        $('#check-1').toggleClass('glyphicon glyphicon-triangle-right glyphicon glyphicon-triangle-left');
+      },800);
+    }
+    else
+    {
+      setTimeout(function (e) {
+        $('.mini-buttons').show(800, 'linear');
+        $('#check-1').toggleClass('glyphicon glyphicon-triangle-right glyphicon glyphicon-triangle-left');
+      }, 800);
+      $('#outer-info').toggle(800);
+
+    }
   });
-  /*
-    // Create an empty layer gropu to be filled with user data afterwards.
-    var overlay_group = new ol.layer.Group({
-
-        title: 'Flood Information',
-        layers: []
-    });
-    // Get user data from geoserver - Map layers.
-    var flood_points = new ol.layer.Tile({
-        title: 'Ireland_flood_points',
-        source: new ol.source.TileWMS({
-            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-            params: {
-                'LAYERS': ' flood_data:ireland_flood_points',
-                'VERSION': '1.1.1'
-            }
-        })
-    });
-    var flood_polygons = new ol.layer.Tile({
-        title: 'Ireland_flood_polygons',
-        source: new ol.source.TileWMS({
-            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-            params: {
-                'LAYERS': 'flood_data:ireland_flood_polygons',
-                'VERSION': '1.1.1.'
-            }
-        })
-    });
-    var coastal_high = new ol.layer.Tile({
-        title: 'Coastal - high risk',
-        source: new ol.source.TileWMS({
-            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-            params: {
-                'LAYERS': 'flood_data:coastal - 10_ eap',
-                'VERSION': '1.1.1'
-            }
-        })
-    });
-    var coastal_medium = new ol.layer.Tile({
-        title: 'Coastal - medium risk',
-        source: new ol.source.TileWMS({
-            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-            params: {
-                'LAYERS': 'flood_data:coastal - 0.5_ eap',
-                'VERSION': '1.1.1'
-            }
-        })
-    });
-    var coastal_low = new ol.layer.Tile({
-        title: 'Coastal - low risk',
-        source: new ol.source.TileWMS({
-            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-            params: {
-                'LAYERS': 'flood_data:coastal - 0.1_ eap',
-                'VERSION': '1.1.1'
-            }
-        })
-    });
-    });
-    var defence_embarkment = new ol.layer.Tile({
-        title: 'Defence Embarkement',
-        source: new ol.source.TileWMS({
-            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-            params: {
-                'LAYERS': 'flood_data:defence embankment',
-                'VERSION': '1.1.1'
-            }
-        })
-    });
-    var defence_wall = new ol.layer.Tile({
-        title: 'Defence wall',
-        source: new ol.source.TileWMS({
-            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-            params: {
-                'LAYERS': 'flood_data:defence wall',
-                'VERSION': '1.1.1'
-            }
-        })
-    });
-    var defended_areas = new ol.layer.Tile({
-        title: 'Defended Areas',
-        source: new ol.source.TileWMS({
-            url: 'http://'+geoserver_link+':8080/geoserver/flood_data/wms',
-            params: {
-                'LAYERS': 'flood_data:defended areas',
-                'VERSION': '1.1.1'
-            }
-        })
-    });
-  */
-
   /*
   * Google Geocoding
   * enter Api key
@@ -216,34 +141,6 @@ $(document).ready(function()
       zoom: 14
     })
   });
-  // map.addControl(new ol.control.ScaleLine());
-  /*
-    // Creating instance for the Layer swither and adding it to the map for controls.
-    var layer_switcher = new ol.control.LayerSwitcher();
-    map.addControl(layer_switcher);
-
-    // Creating instance of popup and add it to the map.
-    var popup = new ol.Overlay.Popup();
-    map.addOverlay(popup);
-    // Adding the user data to layers_group (from above) to show them on map and in the controls.
-    overlay_group.getLayers().push(coastal_high);
-    overlay_group.getLayers().push(coastal_medium);
-    overlay_group.getLayers().push(coastal_low);
-    overlay_group.getLayers().push(fluvial_high);
-    overlay_group.getLayers().push(fluvial_medium);
-    overlay_group.getLayers().push(fluvial_low);
-    overlay_group.getLayers().push(defence_embarkment);
-    overlay_group.getLayers().push(defence_wall);
-    overlay_group.getLayers().push(defended_areas);
-
-    ol.control.LayerSwitcher.forEachRecursive(overlay_group, function(layer) {
-        layer.setVisible(false);
-        layer.setOpacity(0.5);
-    });
-
-    flood_polygons.setOpacity(0.5);
-  */
-
   /*
   * Ability to add marker
   * Move the marker
@@ -382,7 +279,12 @@ $(document).ready(function()
     .then(function (res)
     {
       $('#inner-data').html('Location name: ' + res.display_name);
-      $('#outer-info').show(200);
+      $('.danger').css({'width':'33%'});
+      $('.medium').css({'width':'33%'});
+      $('.low').css({'width':'33%'});
+      $('.very-low').css({'width':'33%'});
+
+      $('#outer-info').show(800);
       $('#check-1').removeClass('glyphicon-chevron-right');
       if (!$('#check-1').hasClass('glyphicon-chevron-left'))
       {
