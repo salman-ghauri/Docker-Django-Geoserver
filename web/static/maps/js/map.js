@@ -35,7 +35,6 @@ $(document).ready(function()
 
   $('#floating-swipe').on('click', function(e)
   {
-    console.log(e);
     if ($('#check-1').hasClass('glyphicon-triangle-right'))
     {
       $('.mini-buttons').hide(800, 'linear');
@@ -278,12 +277,6 @@ $(document).ready(function()
     })
     .then(function (res)
     {
-      $('#inner-data').html('Location name: ' + res.display_name);
-      $('.danger').css({'width':'33%'});
-      $('.medium').css({'width':'33%'});
-      $('.low').css({'width':'33%'});
-      $('.very-low').css({'width':'33%'});
-
       $('#outer-info').show(800);
       $('#check-1').removeClass('glyphicon-chevron-right');
       if (!$('#check-1').hasClass('glyphicon-chevron-left'))
@@ -313,25 +306,25 @@ $(document).ready(function()
       else
       {
         var new_text_2 = '<div class="inner-info-divs">'+
-                            '<div class="danger text-center">High Risk</div>'+
+                            '<div class="danger-2 text-center" id="danger">High Risk</div>'+
                             '<p class="text-2 text-center">'+
                                 cleanValue(output['danger'])+
                             '</p>'+
                           '</div>'+
                           '<div class="inner-info-divs">'+
-                              '<div class="medium text-center">Medium Risk</div>'+
+                              '<div class="medium-2 text-center" id="medium">Medium Risk</div>'+
                               '<p class="text-2 text-center">'+
                                   cleanValue(output['medium'])+
                               '</p>'+
                           '</div>'+
                           '<div class="inner-info-divs">'+
-                              '<div class="low text-center">Low Risk</div>'+
+                              '<div class="low-2 text-center" id="low">Low Risk</div>'+
                               '<p class="text-2 text-center">'+
                                   cleanValue(output['low'])+
                               '</p>'+
                           '</div>'+
                           '<div class="inner-info-divs">'+
-                              '<div class="very-low text-center">Very Low Risk</div>'+
+                              '<div class="very-low-2 text-center" id="very-low">Very Low Risk</div>'+
                               '<p class="text-2 text-center">'+
                                   '225 m away'+
                               '</p>'+

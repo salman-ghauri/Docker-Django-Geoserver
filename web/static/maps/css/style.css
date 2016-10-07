@@ -52,7 +52,6 @@ html, body {
 .navbar {
     margin-bottom: 0;
 }
-
 .navbar-sm .navbar-primary .navbar {
   min-height:30px;
   height: 30px;
@@ -317,60 +316,6 @@ html, body {
 .distance-marker {
   width: 17px;
 }
-#info-region {
-    float: left;
-    height: 93%;
-    width: 60%;
-}
-#inner-data {
-    background: #cecbca none repeat scroll 0 0;
-    border-radius: 11px;
-    height: inherit;
-    margin: 10px;
-    padding: 6px;
-    box-shadow: 4px 5px 11px 3px rgba(50, 50, 50, 0.75);
-}
-#distance-blocks {
-    float: left;
-    height: 90%;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-top: 10px;
-}
-#danger-dis {
-    background: #120efc none repeat scroll 0 0;
-    border-radius: 11px;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    width: 150px;
-    font-size: 11px;
-}
-#medium-dis {
-    background: #2b92fb none repeat scroll 0 0;
-    border-radius: 11px;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    width: 150px;
-    font-size: 11px;
-}
-#low-dis {
-    background: #9393ff none repeat scroll 0 0;
-    border-radius: 11px;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    width: 150px;
-    font-size: 11px;
-}
-#distance-blocks p {
-  margin: 0
-}
-#distance-blocks div {
-  padding: 10px;
-  margin-bottom: 10px;
-}
 .info_icon_2 {
   float: right;
   margin-top: -35px;
@@ -431,7 +376,46 @@ p#floatin-map>img {
   font-weight: bold;
   font-family: serif;
 }
-
+.danger-2 {
+  background: #0041ab;
+  padding: 9px;
+  color: #ffffff;
+  font-weight: bolder;
+  width: 33%;
+  float: left;
+  height: 100%;
+  font-size: 12px;
+}
+.medium-2 {
+  background: rgba(0, 112, 171, 0.86);
+  padding: 9px;
+  color: #ffffff;
+  font-weight: bolder;
+  width: 33%;
+  float: left;
+  height: 100%;
+  font-size: 12px;
+}
+.low-2 {
+  background: #768e94;
+  padding: 9px;
+  color: #ffffff;
+  font-weight: bolder;
+  width: 33%;
+  float: left;
+  height: 100%;
+  font-size: 12px;
+}
+.very-low-2 {
+  background: #bbdce4;
+  padding: 9px;
+  color: #ffffff;
+  font-weight: bolder;
+  width: 33%;
+  float: left;
+  height: 100%;
+  font-size: 12px;
+}
 
 
 
