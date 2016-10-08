@@ -1,7 +1,7 @@
 
 $(document).ready(function()
 {
-
+  var hide_show_time = 800;
   var geoserver_link = window.location.hostname;
   /*
   * @Handeling the modals
@@ -19,12 +19,12 @@ $(document).ready(function()
   $('.container-full').removeClass('hide');
   $('#accept-terms').on('click', function (eap)
   {
-    $('#terms-modal').slideUp(1000);
+    $('#terms-modal').slideUp(900);
     setTimeout(function () {
       $('#terms-modal').modal('hide');
       $('#location-modal').modal('show');
       $('.floating-panel').removeClass('hide');
-    }, 900);
+    }, hide_show_time);
   });
 
   $('#search-location').on('click', function (e)
@@ -37,20 +37,19 @@ $(document).ready(function()
   {
     if ($('#check-1').hasClass('glyphicon-triangle-right'))
     {
-      $('.mini-buttons').hide(800, 'linear');
+      $('.mini-buttons').hide(hide_show_time, 'linear');
       setTimeout(function (e) {
-        $('#outer-info').toggle(800);
+        $('#outer-info').toggle(hide_show_time);
         $('#check-1').toggleClass('glyphicon glyphicon-triangle-right glyphicon glyphicon-triangle-left');
-      },800);
+      }, hide_show_time);
     }
     else
     {
       setTimeout(function (e) {
-        $('.mini-buttons').show(800, 'linear');
+        $('.mini-buttons').show(hide_show_time, 'linear');
         $('#check-1').toggleClass('glyphicon glyphicon-triangle-right glyphicon glyphicon-triangle-left');
-      }, 800);
-      $('#outer-info').toggle(800);
-
+      }, hide_show_time);
+      $('#outer-info').toggle(hide_show_time);
     }
   });
   /*
@@ -277,11 +276,17 @@ $(document).ready(function()
     })
     .then(function (res)
     {
-      $('#outer-info').show(800);
-      $('#check-1').removeClass('glyphicon-chevron-right');
-      if (!$('#check-1').hasClass('glyphicon-chevron-left'))
+      if (!$('#outer-info').is(':visible'))
       {
-        $('#check-1').addClass('glyphicon-chevron-left');
+        $('.mini-buttons').hide(hide_show_time, 'linear');
+        setTimeout(function (e) {
+          $('#outer-info').show(hide_show_time);
+        }, hide_show_time);
+      }
+      $('#check-1').removeClass('glyphicon glyphicon-triangle-right');
+      if (!$('#check-1').hasClass('glyphicon glyphicon-triangle-left'))
+      {
+        $('#check-1').addClass('glyphicon glyphicon-triangle-left');
       }
     });
 
@@ -333,7 +338,6 @@ $(document).ready(function()
         if (!$('#outer-info').hasClass('outer-info-2'))
         {
           $('#outer-info').removeClass().addClass('outer-info-2');
-          console.log($('#outer-info').attr('class'));
         }
       }
     });
