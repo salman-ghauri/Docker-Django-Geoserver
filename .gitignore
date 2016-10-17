@@ -1,3 +1,5 @@
 # to remove env files
 *.env
-.env
+./.env
+./production.env
+./models.py
