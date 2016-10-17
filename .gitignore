@@ -1,2 +1,3 @@
 # to remove env files
 *.env
+.env
