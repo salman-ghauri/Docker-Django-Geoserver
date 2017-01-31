@@ -35,7 +35,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - "80:80"
+      - "8008:80"
     volumes:
       - /www/static
     volumes_from:

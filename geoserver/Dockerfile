@@ -7,4 +7,4 @@
 
 #CMD /opt/tomcat/bin/deploy-and-run.sh
 
-FROM thinkwhere/geoserver:2.9.0
+FROM thinkwhere/geoserver:2.9
