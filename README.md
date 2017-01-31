@@ -1,14 +1,24 @@
-# docker_flood
-Docker built project.
+# Docker-Django-Geoserver
+This is a sample application to get started with docker compose.
+It has following components which run in seperate container:
+- Ngnix
+- Geoserver
+- Postgresql
+- Django web app
+- Named data volumes
 
-Contains the configuration files for the docker project.
+All of the settings in docker compose yaml are intended to beused on local system while the other file is for server.
 
-Web directory has the Django project.
+### Django Web App
+It is a simple web app which is loading few layers of map and data from geoserver. It is using ***Openlayers 3*** for frontend manipulation of data.
+This web app is serverd using Ngnix server and gunicorn. They are setup in respective containers.
 
-DB directory has the db config files.
+### Run Application
+To run the application, just cd into the folder of docker-compose.yml file run following commands:
+```sh
+$ docker-compose build
+$ docker-compose up
+```
 
-Geoserver directory contains the geoserver relatied config files.
-
-Same is the case with nginx.
-
-The django app is configured with **gunicorn** as application server and nginx as a proxy server.
+Feel free to contact regarding any query.
+***Cheers!***
